@@ -40,7 +40,7 @@ class Student extends CI_Controller {
         if($this->session->userdata('student_login') != 1) redirect(base_url(). 'login', 'refresh');
         
        	$page_data['page_name'] = 'program';
-        $page_data['page_title'] =  'Program Saya';
+        $page_data['page_title'] =  'Program';
         $page_data['program'] = $this->program_model->selectProgram();
         $this->load->view('backend/index', $page_data);
     }
