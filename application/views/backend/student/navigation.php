@@ -7,9 +7,9 @@
                         <a href="#" class="waves-effect">
                         <?php 
                         $key = $this->session->userdata('login_type'). '_id';
-                        $face_file = 'uploads/'. $this->session->userdata('login_type'). '_image/'.$this->session->userdata($key).'.jpg'; 
+                        $face_file = 'uploads/'. $this->session->userdata('login_type'). '_image/'.$this->session->userdata($key).'.png'; 
                         if(!file_exists($face_file)){
-                            $face_file = 'uploads/default.jpg';
+                            $face_file = 'uploads/default.png';
                         }
                         ?>
                         <img src="<?php echo base_url() . $face_file;?>" alt="user-img" class="img-circle"> 
@@ -30,6 +30,7 @@
                     
                     <li class="<?php if($page_name == 'online_exam' || $page_name == 'online_exam_take') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/online_exam" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Online Exam');?></span></a> </li>
                     <li class="<?php if($page_name == 'manage_profile') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/manage_profile" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Manage Profile');?></span></a> </li>
+                    <li class="<?php if($page_name == 'program') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/program" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu">Program Saya</span></a> </li>
 
                     <li><a href="<?php echo base_url();?>login/logout/" class="waves-effect"><i class="icon-logout fa-fw"></i> <span class="hide-menu"><?php echo get_phrase('Log Out');?></span></a></li>
                     

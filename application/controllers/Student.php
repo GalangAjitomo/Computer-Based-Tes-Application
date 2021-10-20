@@ -13,6 +13,7 @@ class Student extends CI_Controller {
                 $this->load->model('section_model');	
                 $this->load->model('subject_model');	
                 $this->load->model('student_model');
+                $this->load->model('program_model');
                 
                 /********** *Set your default time zone here **********/
                 timezone();
@@ -31,6 +32,16 @@ class Student extends CI_Controller {
         
        	$page_data['page_name'] = 'dashboard';
         $page_data['page_title'] =  get_phrase('Student Dashboard');
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function program() {
+
+        if($this->session->userdata('student_login') != 1) redirect(base_url(). 'login', 'refresh');
+        
+       	$page_data['page_name'] = 'program';
+        $page_data['page_title'] =  'Program Saya';
+        $page_data['program'] = $this->program_model->selectProgram();
         $this->load->view('backend/index', $page_data);
     }
 

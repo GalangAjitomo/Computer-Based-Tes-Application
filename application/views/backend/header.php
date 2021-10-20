@@ -108,9 +108,9 @@
                         
                         <?php 
                         $key = $this->session->userdata('login_type'). '_id';
-                        $face_file = 'uploads/'. $this->session->userdata('login_type'). '_image/'.$this->session->userdata($key).'.jpg'; 
+                        $face_file = 'uploads/'. $this->session->userdata('login_type'). '_image/'.$this->session->userdata($key).'.png'; 
                         if(!file_exists($face_file)){
-                            $face_file = 'uploads/default.jpg';
+                            $face_file = 'uploads/default.png';
                         }
                         ?>
                         <img src="<?php echo base_url() . $face_file;?>" alt="user-img" width="36" class="img-circle"> 
