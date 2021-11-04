@@ -43,6 +43,7 @@
                     		<th><div><?php echo get_phrase('Name');?></div></th>
                     		<th><div><?php echo get_phrase('Category');?></div></th>
                     		<th><div><?php echo get_phrase('Price');?></div></th>
+                            <th><div><?php echo get_phrase('Actions');?></div></th>
 						</tr>
 					</thead>
                     <tbody>
@@ -53,10 +54,10 @@
 							<td><?php echo $program['name'];?></td>
 							<td><?php echo $program['category'];?></td>
 							<td><?php echo $program['price'];?></td>
-							<td>
-                            <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_program/<?php echo $program['program_id'];?>')"><button class="btn btn-info btn-rounded btn-sm"><?php echo get_phrase('Edit');?></button></a>
-                            
-                            <a href="#" onclick="confirm_modal('<?php echo base_url();?>admin/program/delete/<?php echo $program['program_id'];?>')"><button class="btn btn-danger btn-rounded btn-sm"><?php echo get_phrase('Delete');?></button></a>                            </td>
+                            <td>
+                                <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_program/<?php echo $program['program_id'];?>')"><button class="btn btn-info btn-rounded btn-sm"><?php echo get_phrase('Edit');?></button></a>
+                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>admin/program/delete/<?php echo $program['program_id'];?>')"><button class="btn btn-danger btn-rounded btn-sm"><?php echo get_phrase('Delete');?></button></a>
+                            </td>
                         </tr>
                         <?php endforeach;?>
                   

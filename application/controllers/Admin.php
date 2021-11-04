@@ -10,7 +10,8 @@ class Admin extends CI_Controller {
                 $this->load->model('admin_model');
                 $this->load->model('program_model');
                 $this->load->model('student_model');
-                
+                $this->load->model('materi_model');
+                $this->load->model('submateri_model');
                 /********** *Set your default time zone here **********/
                 timezone();
         
@@ -101,6 +102,58 @@ class Admin extends CI_Controller {
 
         $page_data['page_name'] = 'program';
         $page_data['page_title'] =  get_phrase('Manage program');
+        $this->load->view('backend/index', $page_data);
+
+    }
+
+    function materi($param1 = null, $param2 = null, $param3 = null){
+
+        if($param1 == 'create'){
+            $this->materi_model->createMateriFunction();
+            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
+            redirect(base_url() . 'admin/materi', 'refresh');
+        }
+
+        if($param1 == 'update'){
+            $this->materi_model->updateMateriFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+            redirect(base_url() . 'admin/materi', 'refresh');
+        }
+
+        if($param1 == 'delete'){
+            $this->materi_model->deleteMateriFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+            redirect(base_url() . 'admin/materi', 'refresh');
+        }
+
+        $page_data['page_name'] = 'materi';
+        $page_data['page_title'] =  get_phrase('Manage materi');
+        $this->load->view('backend/index', $page_data);
+
+    }
+
+    function submateri($param1 = null, $param2 = null, $param3 = null){
+
+        if($param1 == 'create'){
+            $this->submateri_model->createSubmateriFunction();
+            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
+            redirect(base_url() . 'admin/submateri', 'refresh');
+        }
+
+        if($param1 == 'update'){
+            $this->submateri_model->updateSubmateriFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+            redirect(base_url() . 'admin/submateri', 'refresh');
+        }
+
+        if($param1 == 'delete'){
+            $this->submateri_model->deleteSubmateriFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+            redirect(base_url() . 'admin/submateri', 'refresh');
+        }
+
+        $page_data['page_name'] = 'submateri';
+        $page_data['page_title'] =  get_phrase('Manage submateri');
         $this->load->view('backend/index', $page_data);
 
     }
