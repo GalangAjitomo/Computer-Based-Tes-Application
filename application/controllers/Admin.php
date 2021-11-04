@@ -8,10 +8,7 @@ class Admin extends CI_Controller {
         		$this->load->database();                        
                 $this->load->library('session');	
                 $this->load->model('admin_model');
-                $this->load->model('class_model');
-                $this->load->model('teacher_model');
-                $this->load->model('section_model');	
-                $this->load->model('subject_model');	
+                $this->load->model('program_model');
                 $this->load->model('student_model');
                 
                 /********** *Set your default time zone here **********/
@@ -56,116 +53,6 @@ class Admin extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
-
-
-    function classes($param1 = null, $param2 = null, $param3 = null){
-
-        if($param1 == 'create'){
-            $this->class_model->createClassFunction();
-            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
-            redirect(base_url() . 'admin/classes', 'refresh');
-        }
-
-        if($param1 == 'update'){
-            $this->class_model->updateClassFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
-            redirect(base_url() . 'admin/classes', 'refresh');
-        }
-
-        if($param1 == 'delete'){
-            $this->class_model->deleteClassFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
-            redirect(base_url() . 'admin/classes', 'refresh');
-        }
-
-        $page_data['page_name'] = 'class';
-        $page_data['page_title'] =  get_phrase('Manage Class');
-        $this->load->view('backend/index', $page_data);
-
-    }
-
-
-
-    function teacher($param1 = null, $param2 = null, $param3 = null){
-
-        if($param1 == 'create'){
-            $this->teacher_model->createTeacherFunction();
-            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
-            redirect(base_url() . 'admin/teacher', 'refresh');
-        }
-
-        if($param1 == 'update'){
-            $this->teacher_model->updateTeacherFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
-            redirect(base_url() . 'admin/teacher', 'refresh');
-        }
-
-        if($param1 == 'delete'){
-            $this->teacher_model->deleteTeacherFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
-            redirect(base_url() . 'admin/teacher', 'refresh');
-        }
-
-        $page_data['page_name'] = 'teacher';
-        $page_data['page_title'] =  get_phrase('Manage Teacher');
-        $this->load->view('backend/index', $page_data);
-
-    }
-
-
-    function section($param1 = null, $param2 = null, $param3 = null){
-
-        if($param1 == 'create'){
-            $this->section_model->createSectionFunction();
-            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
-            redirect(base_url() . 'admin/section', 'refresh');
-        }
-
-        if($param1 == 'update'){
-            $this->section_model->updateSectionFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
-            redirect(base_url() . 'admin/section', 'refresh');
-        }
-
-        if($param1 == 'delete'){
-            $this->section_model->deleteSectionFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
-            redirect(base_url() . 'admin/section', 'refresh');
-        }
-
-        $page_data['page_name'] = 'section';
-        $page_data['page_title'] =  get_phrase('Manage Section');
-        $this->load->view('backend/index', $page_data);
-
-    }
-
-
-    function subject($param1 = null, $param2 = null, $param3 = null){
-
-        if($param1 == 'create'){
-            $this->subject_model->createSubjectFunction();
-            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
-            redirect(base_url() . 'admin/subject', 'refresh');
-        }
-
-        if($param1 == 'update'){
-            $this->subject_model->updateSubjectFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
-            redirect(base_url() . 'admin/subject', 'refresh');
-        }
-
-        if($param1 == 'delete'){
-            $this->subject_model->deleteSubjectFunction($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
-            redirect(base_url() . 'admin/subject', 'refresh');
-        }
-
-        $page_data['page_name'] = 'subject';
-        $page_data['page_title'] =  get_phrase('Manage Subject');
-        $this->load->view('backend/index', $page_data);
-
-    }
-
     function student($param1 = null, $param2 = null, $param3 = null){
 
         if($param1 == 'create'){
@@ -192,13 +79,30 @@ class Admin extends CI_Controller {
 
     }
 
+    function program($param1 = null, $param2 = null, $param3 = null){
 
-    function get_class_sections($class_id){
-
-        $sections = $this->db->get_where('section', array('class_id' => $class_id))->result_array();
-        foreach ($sections as $key => $section){
-            echo '<option value="'.$section['section_id'].'">'.$section['name'].'</option>';
+        if($param1 == 'create'){
+            $this->program_model->createProgramFunction();
+            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
+            redirect(base_url() . 'admin/program', 'refresh');
         }
+
+        if($param1 == 'update'){
+            $this->program_model->updateProgramFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+            redirect(base_url() . 'admin/program', 'refresh');
+        }
+
+        if($param1 == 'delete'){
+            $this->program_model->deleteProgramFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+            redirect(base_url() . 'admin/program', 'refresh');
+        }
+
+        $page_data['page_name'] = 'program';
+        $page_data['page_title'] =  get_phrase('Manage program');
+        $this->load->view('backend/index', $page_data);
+
     }
 
 

@@ -28,31 +28,6 @@
                                             <label for="exampleInputPassword1"><?php echo get_phrase('student Address');?></label>
                                             <input type="text" class="form-control" name="address" value="<?php echo $student['address'];?>">
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1"><?php echo get_phrase('Class');?></label>
-                                            <select name="class_id" class="form-control" onchange="get_class_sections(this.value)">
-                                                <option value="">Select Class</option>
-                                                
-                                                <?php $select_classes = $this->db->get('class')->result_array();
-                                                        foreach($select_classes as $key => $class) : ?>
-                                                <option value="<?php echo $class['class_id'];?>"<?php if($student['class_id'] == $class['class_id']) echo 'selected="selected"' ;?>><?php echo $class['name'];?></option>
-                                                <?php endforeach;?>
-
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1"><?php echo get_phrase('Section');?></label>
-                                            <select name="section_id" id="section_holder" class="form-control" / required>
-                                                <option value="">Select Class First</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1"><?php echo get_phrase('student Image');?></label>
-                                            <input type='file' class="form-control" name="userfile" onChange="readURL(this);">
-                                        </div>
                                         
                                         <button type="submit" class="btn btn-success btn-rounded btn-sm btn-block"><?php echo get_phrase('Save');?></button>
                                    <?php echo form_close();?>

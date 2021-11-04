@@ -1,58 +1,3 @@
- <!--row -->
- <div class="row">
-                    <div class="col-md-3 col-sm-6">
-                        <div class="white-box">
-                            <div class="r-icon-stats">
-                                <i class="ti-home bg-megna"></i>
-                                <div class="bodystate">
-                                    <h4><?php echo $this->db->get('class')->num_rows();?></h4>
-                                    <span class="text-muted"><?php echo get_phrase('class');?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="white-box">
-                            <div class="r-icon-stats">
-                                <i class="ti-book bg-info"></i>
-                                <div class="bodystate">
-                                    <h4><?php echo $this->db->get('subject')->num_rows();?></h4>
-                                    <span class="text-muted"><?php echo get_phrase('subject');?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="white-box">
-                            <div class="r-icon-stats">
-                                <i class="ti-user bg-success"></i>
-                                <div class="bodystate">
-                                    <h4><?php echo $this->db->get('student')->num_rows();?></h4>
-                                    <span class="text-muted"><?php echo get_phrase('student');?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="white-box">
-                            <div class="r-icon-stats">
-                                <i class="ti-list bg-inverse"></i>
-                                <div class="bodystate">
-                                    <h4>
-                                    <?php 
-                                    $running_year = $this->db->get_where('settings', array('type' => 'session'))->row()->description;
-                                    echo $this->db->get_where('online_exam', array('running_year' => $running_year))->num_rows();
-                                    ?>
-                                    </h4>
-                                    <span class="text-muted"><?php echo get_phrase('online exam');?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-                <!--/row -->
-                
-                <!--row -->
 <div class="row">
     <div class="col-md-12 col-lg-12">
         <div class="panel panel-info">
@@ -156,36 +101,6 @@
 
     <script scr="<?php echo base_url();?>js/optimumajax.js"></script>
     <script src="<?php echo base_url(); ?>js/optimumajax.js"></script>
-    <script language="javascript">
-
-            $(function() {
-
-                $("#message").keypress(function (e) {
-                    if(e.which == 13) {
-
-                        //submit form via ajax
-                        var message = $("textarea#message").val();
-                        var user_id = $("input#user_id").val();
-
-                            jQuery.ajax({
-                            type: "POST",
-                            url: "<?php echo base_url(); ?>" + "admin/general_message",
-                            dataType: 'json',
-                            data: {message: message, user_id: user_id},
-                                success: function(res) {
-                                    if (res){
-                                    // echo some message here
-                                    }
-                                }
-                            });
-                        $(this).val("");
-                        e.preventDefault();
-                    }
-                });
-            });
-
-
-    </script>
 
 
 

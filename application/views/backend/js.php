@@ -100,7 +100,7 @@
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/peity/jquery.peity.init.js" ></script>
     <!-- Custom Theme JavaScript -->
     <script src="<?php echo base_url(); ?>optimum/js/custom.min.js" ></script>
-    <script src="<?php echo base_url(); ?>optimum/js/dashboard1.js" ></script>
+    <!-- <script src="<?php echo base_url(); ?>optimum/js/dashboard1.js" ></script> -->
  <!-- Calendar JavaScript -->
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/calendar/jquery-ui.min.js" ></script>
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/moment/moment.js" ></script>
@@ -140,7 +140,6 @@
 
 	 
 	 <!--Wave Effects -->
-    <script src="js/waves.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/gallery/js/animated-masonry-gallery.js" ></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/gallery/js/jquery.isotope.min.js" ></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>optimum/plugins/bower_components/fancybox/ekko-lightbox.min.js" ></script>
@@ -201,7 +200,7 @@
 	 
 	 <!-- Chart Files -->
 		<script src="<?php echo base_url(); ?>optimum/flot/jquery.flot.js"></script>
-		<script src="<?php echo base_url(); ?>optimum/flot.tooltip/flot.tooltip.js"></script>
+		<!-- <script src="<?php echo base_url(); ?>optimum/flot.tooltip/flot.tooltip.js"></script> -->
 		<script src="<?php echo base_url(); ?>optimum/flot/jquery.flot.pie.js"></script>
 		<script src="<?php echo base_url(); ?>optimum/flot/jquery.flot.categories.js"></script>
 		<script src="<?php echo base_url(); ?>optimum/flot/jquery.flot.resize.js"></script>
@@ -211,8 +210,8 @@
 		<script src="<?php echo base_url(); ?>optimum/liquid-meter/liquid.meter.js"></script>
 	
 		<!-- Examples -->
-		<script src="<?php echo base_url();?>assets/javascripts/dashboard/custom_dashboard.js"></script>
-		<script src="<?php echo base_url();?>assets/javascripts/forms/custom_validation.js"></script>
+		<!-- <script src="<?php echo base_url();?>assets/javascripts/dashboard/custom_dashboard.js"></script> -->
+		<!-- <script src="<?php echo base_url();?>assets/javascripts/forms/custom_validation.js"></script> -->
         <script src="<?php echo base_url();?>assets/javascripts/tables/examples.datatables.default.js"></script>
 		<script src="<?php echo base_url();?>assets/javascripts/tables/examples.datatables.tabletools.js"></script>
 	 
@@ -389,13 +388,13 @@
     }
     // Colorpicker
 
-    $(".colorpicker").asColorPicker();
-    $(".complex-colorpicker").asColorPicker({
-        mode: 'complex'
-    });
-    $(".gradient-colorpicker").asColorPicker({
-        mode: 'gradient'
-    });
+    // $(".colorpicker").asColorPicker();
+    // $(".complex-colorpicker").asColorPicker({
+    //     mode: 'complex'
+    // });
+    // $(".gradient-colorpicker").asColorPicker({
+    //     mode: 'gradient'
+    // });
     // Date Picker
     jQuery('.mydatepicker, #datepicker').datepicker();
     jQuery('#datepicker-autoclose').datepicker({
@@ -413,32 +412,32 @@
 
     // Daterange picker
 
-    $('.input-daterange-datepicker').daterangepicker({
-        buttonClasses: ['btn', 'btn-sm'],
-        applyClass: 'btn-danger',
-        cancelClass: 'btn-inverse'
-    });
-    $('.input-daterange-timepicker').daterangepicker({
-        timePicker: true,
-        format: 'MM/DD/YYYY h:mm A',
-        timePickerIncrement: 30,
-        timePicker12Hour: true,
-        timePickerSeconds: false,
-        buttonClasses: ['btn', 'btn-sm'],
-        applyClass: 'btn-danger',
-        cancelClass: 'btn-inverse'
-    });
-    $('.input-limit-datepicker').daterangepicker({
-        format: 'MM/DD/YYYY',
-        minDate: '06/01/2015',
-        maxDate: '06/30/2015',
-        buttonClasses: ['btn', 'btn-sm'],
-        applyClass: 'btn-danger',
-        cancelClass: 'btn-inverse',
-        dateLimit: {
-            days: 6
-        }
-    });
+    // $('.input-daterange-datepicker').daterangepicker({
+    //     buttonClasses: ['btn', 'btn-sm'],
+    //     applyClass: 'btn-danger',
+    //     cancelClass: 'btn-inverse'
+    // });
+    // $('.input-daterange-timepicker').daterangepicker({
+    //     timePicker: true,
+    //     format: 'MM/DD/YYYY h:mm A',
+    //     timePickerIncrement: 30,
+    //     timePicker12Hour: true,
+    //     timePickerSeconds: false,
+    //     buttonClasses: ['btn', 'btn-sm'],
+    //     applyClass: 'btn-danger',
+    //     cancelClass: 'btn-inverse'
+    // });
+    // $('.input-limit-datepicker').daterangepicker({
+    //     format: 'MM/DD/YYYY',
+    //     minDate: '06/01/2015',
+    //     maxDate: '06/30/2015',
+    //     buttonClasses: ['btn', 'btn-sm'],
+    //     applyClass: 'btn-danger',
+    //     cancelClass: 'btn-inverse',
+    //     dateLimit: {
+    //         days: 6
+    //     }
+    // });
     </script>
 	
 	<script src="<?php echo base_url(); ?>optimum/plugins/bower_components/toast-master/js/jquery.toast.js"></script>
@@ -562,13 +561,6 @@
     })()
   </script>
   
-  <script src="<?php echo base_url(); ?>js/chat.js"></script>
-  
-  <script type="text/javascript">
-var audioUrl = '<?php echo base_url(); ?>uploads/chat.mp3';
-// SIMPLE EXEMPLE
-var audio = new Audio(audioUrl); // define your audio
-$('.btn').click( () => audio.play() ); // that will do the trick !!
 
 // ADVANCED EXEMPLE
 

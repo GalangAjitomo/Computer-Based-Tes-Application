@@ -27,23 +27,8 @@
                     </li>
                    
                     <li class="<?php if($page_name == 'dashboard') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/dashboard" class="waves-effect"><i class="ti-dashboard p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Dashboard');?></span></a> </li>
-                    
-                    <li> <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"> <?php echo get_phrase('Manage Class');?> <span class="fa arrow"></span></span></a>
-                        <ul class="nav nav-second-level">
-                            <li class="<?php if($page_name == 'classes') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/classes"><?php echo get_phrase('New Class');?></a> </li>
-                            <li class="<?php if($page_name == 'section') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/section"><?php echo get_phrase('New Section');?></a> </li>
-                        </ul>
-                    </li>
-                    <li class="<?php if($page_name == 'subject') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/subject" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Manage Subject');?></span></a> </li>
-                    <li class="<?php if($page_name == 'teacher') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/teacher" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Manage Teacher');?></span></a> </li>
-                    
-                    <li> <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"> <?php echo get_phrase('Manage Student');?> <span class="fa arrow"></span></span></a>
-                        <ul class="nav nav-second-level">
-                           
-                            <li class="<?php if($page_name == 'student') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/student"><?php echo get_phrase('New Student');?></a> </li>
-                        </ul>
-                    </li>
-
+                    <li class="<?php if($page_name == 'student') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/student"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Student');?></span></a> </li>  
+                    <li class="<?php if($page_name == 'program') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/program"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Program');?></span></a> </li>   
                     <li> <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"> <?php echo get_phrase('Examination');?> <span class="fa arrow"></span></span></a>
                         <ul class="nav nav-second-level">
                            
