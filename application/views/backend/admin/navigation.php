@@ -30,7 +30,8 @@
                     <li class="<?php if($page_name == 'student') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/student"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Student');?></span></a> </li>  
                     <li class="<?php if($page_name == 'program') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/program"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Program');?></span></a> </li>
                     <li class="<?php if($page_name == 'materi') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/materi"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Materi');?></span></a> </li>
-                    <li class="<?php if($page_name == 'submateri') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/submateri"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Submateri');?></span></a> </li>            
+                    <li class="<?php if($page_name == 'submateri') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/submateri"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Submateri');?></span></a> </li>
+                    <li class="<?php if($page_name == 'quiz') echo 'active'; ?>"> <a href="<?php echo base_url();?>admin/quiz"><i class="fa fa-angle-double-right p-r-10"></i><span class="hide-menu"> <?php echo get_phrase('Manage Quiz');?></span></a> </li>            
                     <li> <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"> <?php echo get_phrase('Examination');?> <span class="fa arrow"></span></span></a>
                         <ul class="nav nav-second-level">
                            

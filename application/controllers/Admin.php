@@ -12,6 +12,7 @@ class Admin extends CI_Controller {
                 $this->load->model('student_model');
                 $this->load->model('materi_model');
                 $this->load->model('submateri_model');
+                $this->load->model('quiz_model');
                 /********** *Set your default time zone here **********/
                 timezone();
         
@@ -154,6 +155,32 @@ class Admin extends CI_Controller {
 
         $page_data['page_name'] = 'submateri';
         $page_data['page_title'] =  get_phrase('Manage submateri');
+        $this->load->view('backend/index', $page_data);
+
+    }
+
+    function quiz($param1 = null, $param2 = null, $param3 = null){
+
+        if($param1 == 'create'){
+            $this->quiz_model->createQuizFunction();
+            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
+            redirect(base_url() . 'admin/quiz', 'refresh');
+        }
+
+        if($param1 == 'update'){
+            $this->quiz_model->updateQuizFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+            redirect(base_url() . 'admin/quiz', 'refresh');
+        }
+
+        if($param1 == 'delete'){
+            $this->quiz_model->deleteQuizFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+            redirect(base_url() . 'admin/quiz', 'refresh');
+        }
+
+        $page_data['page_name'] = 'quiz';
+        $page_data['page_title'] =  get_phrase('Manage Quiz');
         $this->load->view('backend/index', $page_data);
 
     }
