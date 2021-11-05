@@ -53,36 +53,26 @@ class Crud_model extends CI_Model {
 
 
     function create_online_exam(){
-        $data['code']  = substr(md5(uniqid(rand(), true)), 0, 7);
-        $data['title'] = $this->input->post('exam_title');
-        $data['class_id'] = $this->input->post('class_id');
-        $data['section_id'] = $this->input->post('section_id');
-        $data['subject_id'] = $this->input->post('subject_id');
+        $start = $this->input->post('start_date');
+        $data['title'] = $this->input->post('title');
+        $data['program_id'] = $this->input->post('program_id');
         $data['minimum_percentage'] = $this->input->post('minimum_percentage');
-        $data['instruction'] = $this->input->post('instruction');
-        $data['status'] = 'pending';
-        $data['exam_date'] = strtotime($this->input->post('exam_date'));
-        $data['time_start'] = $this->input->post('time_start');
-        $data['time_end'] = $this->input->post('time_end');
-        $data['duration'] = strtotime(date('Y-m-d', $data['exam_date']).' '.$data['time_end']) - strtotime(date('Y-m-d', $data['exam_date']).' '.$data['time_start']);
-        $data['running_year'] =   $this->db->get_where('settings' , array('type'=>'session'))->row()->description;
+        $data['start_date'] = $this->input->post('start_date');
+        $data['end_date'] = $this->input->post('end_date');
+        $data['duration'] = $this->input->post('duration');
 
         $this->db->insert('online_exam', $data);
     }
 
     function update_online_exam(){
 
-        $data['title'] = $this->input->post('exam_title');
-        $data['class_id'] = $this->input->post('class_id');
-        $data['section_id'] = $this->input->post('section_id');
-        $data['subject_id'] = $this->input->post('subject_id');
+        $data['title'] = $this->input->post('title');
+        $data['program_id'] = $this->input->post('program_id');
         $data['minimum_percentage'] = $this->input->post('minimum_percentage');
-        $data['instruction'] = $this->input->post('instruction');
-        $data['exam_date'] = strtotime($this->input->post('exam_date'));
-        $data['time_start'] = $this->input->post('time_start');
-        $data['time_end'] = $this->input->post('time_end');
-        $data['duration'] = strtotime(date('Y-m-d', $data['exam_date']).' '.$data['time_end']) - strtotime(date('Y-m-d', $data['exam_date']).' '.$data['time_start']);
-
+        $data['start_date'] = date('Y-m-d',$this->input->post('start_date'));
+        $data['end_date'] = date('Y-m-d',$this->input->post('end_date'));
+        $data['duration'] = $this->input->post('duration');
+        
         $this->db->where('online_exam_id', $this->input->post('online_exam_id'));
         $this->db->update('online_exam', $data);
     }

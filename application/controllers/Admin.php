@@ -198,55 +198,43 @@ class Admin extends CI_Controller {
     }
 
     function manage_online_exam ($param1 = null, $param2 = null, $param3 = null){
-        
-        $running_year = $this->db->get_where('settings', array('type' => 'session'))->row()->description;
-        
         if($param1 == ''){
-           
-            $match = array('status !=' => 'expired', 'running_year' => $running_year);
             $page_data['status'] = 'active';
-            $this->db->order_by('exam_date', 'desc');
-            $page_data['online_exams'] = $this->db->where($match)->get('online_exam')->result_array();
+            $this->db->order_by('start_date', 'desc');
+            $page_data['online_exams'] = $this->db->get('online_exam')->result_array();
         }
 
-        if($param1 == 'expired'){
+        // if($param1 == 'expired'){
  
-             $match = array('status' => 'expired', 'running_year' => $running_year);
-             $page_data['status'] = 'expired';
-             $this->db->order_by('exam_date', 'desc');
-             $page_data['online_exams'] = $this->db->where($match)->get('online_exam')->result_array();
-         }
+        //      $match = array('status' => 'expired', 'running_year' => $running_year);
+        //      $page_data['status'] = 'expired';
+        //      $this->db->order_by('exam_date', 'desc');
+        //      $page_data['online_exams'] = $this->db->where($match)->get('online_exam')->result_array();
+        //  }
 
         if($param1 == 'create'){
-
-            if ($this->input->post('class_id') > 0 && $this->input->post('section_id') > 0 && $this->input->post('subject_id') > 0) {
-                $this->crud_model->create_online_exam();
-                $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
-                redirect(site_url('admin/manage_online_exam'), 'refresh');
-            }
-            else {
-                $this->session->set_flashdata('error_message', get_phrase('ensure subject, class and section are selected'));
-                redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-            }
+            $this->crud_model->create_online_exam();
+            $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
+            redirect(site_url('admin/manage_online_exam'), 'refresh');
         }
 
-        if($param1 == 'edit'){
-            if($this->input->post('class_id') > 0 && $this->input->post('subject_id') > 0 && $this->input->post('section_id') > 0){
-                $this->crud_model->update_online_exam();
-                $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
-                redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-            }
-            else {
-                $this->session->set_flashdata('error_message', get_phrase('ensure subject, class and section are selected'));
-                redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-            }
-        }
+        // if($param1 == 'edit'){
+        //     if($this->input->post('class_id') > 0 && $this->input->post('subject_id') > 0 && $this->input->post('section_id') > 0){
+        //         $this->crud_model->update_online_exam();
+        //         $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+        //         redirect(base_url() . 'admin/manage_online_exam', 'refresh');
+        //     }
+        //     else {
+        //         $this->session->set_flashdata('error_message', get_phrase('ensure subject, class and section are selected'));
+        //         redirect(base_url() . 'admin/manage_online_exam', 'refresh');
+        //     }
+        // }
 
-        if($param1 == 'delete'){
-            $this->crud_model->delete_online_exam($param2);
-            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
-            redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-        }
+        // if($param1 == 'delete'){
+        //     $this->crud_model->delete_online_exam($param2);
+        //     $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+        //     redirect(base_url() . 'admin/manage_online_exam', 'refresh');
+        // }
 
 
         $page_data['page_name'] = 'manage_online_exam';
