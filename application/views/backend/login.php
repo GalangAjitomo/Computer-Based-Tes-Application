@@ -11,7 +11,7 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="We ddevelop creative software, eye catching software. We also train to become a creative thinker">
 <meta name="author" content="OPTIMUM LINKUP COMPUTERS">
-<link rel="icon"  sizes="16x16" href="<?php echo base_url() ?>uploads/logo.png">
+<link rel="icon"  sizes="16x16" href="<?php echo base_url() ?>uploads/logo2-round.png">
         <title><?php echo $system_title;?></title>
 <!-- Bootstrap Core CSS -->
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -41,11 +41,8 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
   <div class="login-box login-sidebar">
   <br><br><br>
     <div class="white-box">
-	 <h4 class="box-title m-b-20" align="center">
-					<img src="<?php echo base_url() ?>uploads/logo.png" class="img-circle" width="70" height="70"/></h4>
-					<h5 align="center"><a href=""><?php echo $system_name;?></a></h5>
-					
-					<br><br>
+	 <h2 class="box-title m-b-20" align="center">
+					<img src="<?php echo base_url() ?>uploads/logo2-round.png" class="img-circle" width="200" height="200"/></h2>			
 					
 	<form method="post" role="form" id="loginform" class="form-horizontal form-material" action="<?php echo base_url();?>login/check_login">
 
