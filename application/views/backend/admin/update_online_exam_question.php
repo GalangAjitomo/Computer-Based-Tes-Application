@@ -5,28 +5,24 @@
     } else {
         $options = array();
     }
-    if ($question_details['correct_answers'] != "" || $question_details['correct_answers'] != null) {
-        $correct_answers= json_decode($question_details['correct_answers']);
-    } else {
-        $correct_answers = array();
-    }
 
     $online_exam_details = $this->db->get_where('online_exam', array('online_exam_id' => $question_details['online_exam_id']))->row_array();
 
     $added_question_info = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_details['online_exam_id']))->result_array();
-    if($question_details['type'] == 'fill_in_the_blanks') {
-        $suitable_words = implode(',', json_decode($question_details['correct_answers']));
-    }
 ?>
 <hr>
 <div class="row">
     <div class="col-md-12">
         <?php echo form_open(site_url('admin/update_online_exam_question/'.$param2.'/update'.'/'.$question_details['online_exam_id']) , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
-
-<div class="form-group">
-                 	<label class="col-md-12" for="example-text"><?php echo get_phrase('mark');?></label>
-                    <div class="col-sm-12">
-                <input type="number" class="form-control" name="mark" min="0" value="<?php echo $question_details['mark']; ?>"/ required>
+        <div class="form-group">
+            <label class="col-md-12" for="example-text"><?php echo get_phrase('Question Category');?></label>
+            <div class="col-sm-12">
+                <select class="form-control" name="category" id="category">
+                    <option value=""><?php echo get_phrase('Select Category');?></option>
+                    <option value="A"><?php echo get_phrase('Category A');?></option>
+                    <option value="B"><?php echo get_phrase('Category B');?></option>
+                    <option value="C"><?php echo get_phrase('Category C');?></option>
+                </select>
             </div>
         </div>
 
@@ -37,67 +33,78 @@
                 </div>
         </div>
 
-        <!-- Multiple choice question portion -->
-        <?php if ($question_details['type'] == 'multiple_choice'): ?>
-            <div class="form-group" id = 'multiple_choice_question'>
-               <label class="col-md-12" for="example-text"><?php echo get_phrase('number_options');?></label>
+        <div class="form-group">
+            <label class="col-md-12" for="example-text">Option A</label>
 
-                <div class="col-sm-12">
-                    <div class="input-group">
-                      <input type="number" class="form-control" name="number_of_options" id = "number_of_options" data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>" min="0" value="<?php echo $question_details['number_of_options']; ?>"/>
-                      <div class="input-group-addon" style="padding: 0px"><button type="button" class = 'btn btn-sm pull-right' name="button" onclick="showOptions(jQuery('#number_of_options').val())" style="border-radius: 0px; background-color: #eeeeee;"><i class="fa fa-check"></i></button></div>
-                    </div>
+            <div class="col-sm-12">
+                <div class="input-group">
+                <input type="text" class="form-control" name = "options[]" id="option_<?php echo $i; ?>" placeholder="" value="<?php echo $options[0]; ?>" required>
+                <div class="input-group-addon"><input type = 'checkbox' name = "correct_answers" value = "1" <?php if($question_details['correct_answers'] == "1") echo "checked"?>></div>
                 </div>
             </div>
-            <?php for ($i = 0; $i < $question_details['number_of_options']; $i++):?>
-                <div class="form-group options">
-                   <label class="col-md-12" for="example-text"><?php echo get_phrase('option_').($i+1);?></label>
-                    <div class="col-sm-12">
-                        <div class="input-group">
-                          <input type="text" class="form-control" name = "options[]" id="option_<?php echo $i+1; ?>" placeholder="<?php echo get_phrase('option_').($i+1); ?>" required value="<?php echo $options[$i]; ?>">
-                          <div class="input-group-addon"><input type = 'checkbox' name = "correct_answers[]" value = <?php echo ($i+1); ?> <?php if(in_array(($i+1), $correct_answers)) echo 'checked'; ?>></div>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor;?>
-        <?php endif; ?>
+        </div>
 
-        <!-- True False question portion -->
-        <?php if ($question_details['type'] == 'true_false'): ?>
-            <div class="row"  style="margin-top: 10px; text-align: left;">
-                <div class="col-sm-8 col-sm-offset-3">
-                    <p>
-                        <input type="radio" id="true" name="true_false_answer" value="true" <?php if($question_details['correct_answers'] == 'true') echo 'checked';  ?>>
-                        <label for="true"><?php echo get_phrase('true'); ?></label>
-                    </p>
-                </div>
-                <div class="col-sm-8 col-sm-offset-3">
-                    <p>
-                        <input type="radio" id="false" name="true_false_answer" value="false" <?php if($question_details['correct_answers'] == 'false') echo 'checked';  ?>>
-                        <label for="false"><?php echo get_phrase('false'); ?></label>
-                    </p>
-                </div>
+        <div class="form-group">
+            <label class="col-md-12" for="example-text">Option B</label>
 
-            </div>
-        <?php endif; ?>
-
-        <!-- Fill In The Blanks question portion -->
-        <?php if ($question_details['type'] == 'fill_in_the_blanks'): ?>
-
-            <div class="form-group">
-                <label class="col-md-12" for="example-text"><?php echo get_phrase('preview');?></label>
-                <div class="col-sm-12">
-                    <div class="" id = "preview"></div>
+            <div class="col-sm-12">
+                <div class="input-group">
+                <input type="text" class="form-control" name = "options[]" id="option_<?php echo $i; ?>" placeholder="" value="<?php echo $options[1]; ?>" required>
+                <div class="input-group-addon"><input type = 'checkbox' name = "correct_answers" value = "2" <?php if($question_details['correct_answers'] == "2") echo "checked"?>></div>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-12" for="example-text">Option C</label>
 
-            <div class="form-group">
-                <label class="col-md-12" for="example-text"><?php echo get_phrase('suitable_words');?></label>
-                <div class="col-sm-12">
-                    <textarea name="suitable_words" class = "form-control" rows="8" cols="80" placeholder="<?php echo get_phrase('this_area_will_contain_suitable_words_for_the_blanks').'. '.get_phrase('please_write_down_the_suitable_words_side_by_side_with_a_comma').' \',\' '.get_phrase('delimiter').'...'; ?>" ><?php echo $suitable_words; ?></textarea>
+            <div class="col-sm-12">
+                <div class="input-group">
+                <input type="text" class="form-control" name = "options[]" id="option_<?php echo $i; ?>" placeholder="" value="<?php echo $options[2]; ?>" required>
+                <div class="input-group-addon"><input type = 'checkbox' name = "correct_answers" value = "3" <?php if($question_details['correct_answers'] == "3") echo "checked"?>></div>
                 </div>
             </div>
-        <?php endif; ?>
+        </div>
+        <div class="form-group">
+            <label class="col-md-12" for="example-text">Option D</label>
+
+            <div class="col-sm-12">
+                <div class="input-group">
+                <input type="text" class="form-control" name = "options[]" id="option_<?php echo $i; ?>" placeholder="" value="<?php echo $options[3]; ?>" required>
+                <div class="input-group-addon"><input type = 'checkbox' name = "correct_answers" value = "4" <?php if($question_details['correct_answers'] == "4") echo "checked"?>></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-12" for="example-text">Option E</label>
+
+            <div class="col-sm-12">
+                <div class="input-group">
+                <input type="text" class="form-control" name = "options[]" id="option_<?php echo $i; ?>" placeholder="" value="<?php echo $options[4]; ?>" required>
+                <div class="input-group-addon"><input type = 'checkbox' name = "correct_answers" value = "5" <?php if($question_details['correct_answers'] == "5") echo "checked"?>></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+    <label class="col-md-12" for="example-text"><?php echo get_phrase('Explanation');?></label>
+   <div class="col-sm-12">
+        <textarea onkeyup="changeTheBlankColor()" name="explanation" class="form-control" id="explanation" rows="8" cols="80" required><?php echo $question_details['explanation']; ?></textarea>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-12" for="example-text"><?php echo get_phrase('Reference');?></label>
+   <div class="col-sm-12">
+        <textarea onkeyup="changeTheBlankColor()" name="reference" class="form-control" id="reference" rows="2" cols="80" required><?php echo $question_details['reference']; ?></textarea>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-md-12" for="example-text"><?php echo get_phrase('Keywords');?></label>
+   <div class="col-sm-12">
+        <textarea onkeyup="changeTheBlankColor()" name="keywords" class="form-control" id="keywords" required><?php echo $question_details['keywords']; ?></textarea>
+    </div>
+</div>
 
         <div class="form-group">
             <div class="col-sm-12">

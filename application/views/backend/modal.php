@@ -22,7 +22,7 @@
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="modal_ajax">
         <div class="modal-dialog modal-lg">
             <div class="modal-content slimscrollsidebar">
-                <div class="modal-body " style="height:400px"></div>
+                <div class="modal-body " style="height:700px"></div>
             </div>
         </div>
     </div>

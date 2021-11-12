@@ -69,8 +69,8 @@ class Crud_model extends CI_Model {
         $data['title'] = $this->input->post('title');
         $data['program_id'] = $this->input->post('program_id');
         $data['minimum_percentage'] = $this->input->post('minimum_percentage');
-        $data['start_date'] = date('Y-m-d',$this->input->post('start_date'));
-        $data['end_date'] = date('Y-m-d',$this->input->post('end_date'));
+        $data['start_date'] = $this->input->post('start_date');
+        $data['end_date'] = $this->input->post('end_date');
         $data['duration'] = $this->input->post('duration');
         
         $this->db->where('online_exam_id', $this->input->post('online_exam_id'));
@@ -84,10 +84,6 @@ class Crud_model extends CI_Model {
 
     // multiple_choice_question crud functions
     function add_multiple_choice_question_to_online_exam($online_exam_id){
-        if (sizeof($this->input->post('options')) != $this->input->post('number_of_options')) {
-            $this->session->set_flashdata('error_message' , get_phrase('options can noy be blank'));
-            return;
-        }
         foreach ($this->input->post('options') as $key => $option) {
             if ($option == "") {
                 $this->session->set_flashdata('error_message' , get_phrase('no_options_can_be_blank'));
@@ -102,21 +98,18 @@ class Crud_model extends CI_Model {
         }
         $data['online_exam_id']     = $online_exam_id;
         $data['question_title']     = $this->input->post('question_title');
-        $data['mark']               = $this->input->post('mark');
-        $data['number_of_options']  = $this->input->post('number_of_options');
-        $data['type']               = 'multiple_choice';
+        $data['category']           = $this->input->post('category');
         $data['options']            = json_encode($this->input->post('options'));
-        $data['correct_answers']    = json_encode($correct_answers);
+        $data['correct_answers']    = $correct_answers;
+        $data['explanation']           = $this->input->post('explanation');
+        $data['reference']           = $this->input->post('reference');
+        $data['keywords']           = $this->input->post('keywords');
         $this->db->insert('question_bank', $data);
         $this->session->set_flashdata('flash_message' , get_phrase('question added successfully'));
     }
 
 
     function update_multiple_choice_question($question_id){
-        if (sizeof($this->input->post('options')) != $this->input->post('number_of_options')) {
-            $this->session->set_flashdata('error_message' , get_phrase('options can noy be blank'));
-            return;
-        }
         foreach ($this->input->post('options') as $key => $option) {
             if ($option == "") {
                 $this->session->set_flashdata('error_message' , get_phrase('no_options_can_be_blank'));
@@ -130,78 +123,16 @@ class Crud_model extends CI_Model {
             $correct_answers = $this->input->post('correct_answers');
         }
         $data['question_title']     = $this->input->post('question_title');
-        $data['mark']               = $this->input->post('mark');
-        $data['number_of_options']  = $this->input->post('number_of_options');
+        $data['category']           = $this->input->post('category');
         $data['options']            = json_encode($this->input->post('options'));
-        $data['correct_answers']    = json_encode($correct_answers);
+        $data['correct_answers']    = $correct_answers;
+        $data['explanation']           = $this->input->post('explanation');
+        $data['reference']           = $this->input->post('reference');
+        $data['keywords']           = $this->input->post('keywords');
 
         $this->db->where('question_bank_id', $question_id);
         $this->db->update('question_bank', $data);
         $this->session->set_flashdata('flash_message' , get_phrase('question updated successfully'));
-    }
-
-    // true_false_question crud functions
-    function add_true_false_question_to_online_exam($online_exam_id){
-
-        $data['online_exam_id']     = $online_exam_id;
-        $data['question_title']     = $this->input->post('question_title');
-        $data['mark']               = $this->input->post('mark');
-        $data['type']               = 'true_false';
-        $data['correct_answers']    = $this->input->post('true_false_answer');
-
-        $this->db->insert('question_bank', $data);
-        $this->session->set_flashdata('flash_message' , get_phrase('question added successfully'));
-    }
-
-    function update_true_false_question($question_id){
-
-        $data['question_title']     = $this->input->post('question_title');
-        $data['mark']               = $this->input->post('mark');
-        $data['correct_answers']    = $this->input->post('true_false_answer');
-
-        $this->db->where('question_bank_id', $question_id);
-        $this->db->update('question_bank', $data);
-        $this->session->set_flashdata('flash_message' , get_phrase('question updated successfully'));
-    }
-
-     // fill_in_the_blanks_question crud functions
-    function add_fill_in_the_blanks_question_to_online_exam($online_exam_id){
-
-        $suitable_words_array = explode(',', $this->input->post('suitable_words'));
-        $suitable_words = array();
-        foreach($suitable_words_array as $key => $row){
-            array_push($suitable_words, strtolower($row));
-        }
-
-        $data['online_exam_id']     = $online_exam_id;
-        $data['question_title']     = $this->input->post('question_title');
-        $data['mark']               = $this->input->post('mark');
-        $data['type']               = 'fill_in_the_blanks';
-        $data['correct_answers']    = json_encode(array_map('trim', $suitable_words));
-
-        $this->db->insert('question_bank', $data);
-        $this->session->set_flashdata('flash_message' , get_phrase('question added successfully'));
-
-    }
-
-
-    function update_fill_in_the_blanks_question($question_id){
-
-        $suitable_words_array = explode(',', $this->input->post('suitable_words'));
-        $suitable_words = array();
-        foreach($suitable_words_array as $key => $row){
-            array_push($suitable_words, strtolower($row));
-        }
-
-        $data['question_title']     = $this->input->post('question_title');
-        $data['mark']               = $this->input->post('mark');
-        $data['type']               = 'fill_in_the_blanks';
-        $data['correct_answers']    = json_encode(array_map('trim', $suitable_words));
-
-        $this->db->where('question_bank_id', $question_id);
-        $this->db->update('question_bank', $data);
-        $this->session->set_flashdata('flash_message' , get_phrase('question updated successfully'));
-
     }
 
     function delete_question_from_online_exam($question_id){

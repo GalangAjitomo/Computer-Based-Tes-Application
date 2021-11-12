@@ -204,37 +204,23 @@ class Admin extends CI_Controller {
             $page_data['online_exams'] = $this->db->get('online_exam')->result_array();
         }
 
-        // if($param1 == 'expired'){
- 
-        //      $match = array('status' => 'expired', 'running_year' => $running_year);
-        //      $page_data['status'] = 'expired';
-        //      $this->db->order_by('exam_date', 'desc');
-        //      $page_data['online_exams'] = $this->db->where($match)->get('online_exam')->result_array();
-        //  }
-
         if($param1 == 'create'){
             $this->crud_model->create_online_exam();
             $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
             redirect(site_url('admin/manage_online_exam'), 'refresh');
         }
 
-        // if($param1 == 'edit'){
-        //     if($this->input->post('class_id') > 0 && $this->input->post('subject_id') > 0 && $this->input->post('section_id') > 0){
-        //         $this->crud_model->update_online_exam();
-        //         $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
-        //         redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-        //     }
-        //     else {
-        //         $this->session->set_flashdata('error_message', get_phrase('ensure subject, class and section are selected'));
-        //         redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-        //     }
-        // }
+        if($param1 == 'edit'){
+            $this->crud_model->update_online_exam();
+            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+            redirect(base_url() . 'admin/manage_online_exam', 'refresh');
+        }
 
-        // if($param1 == 'delete'){
-        //     $this->crud_model->delete_online_exam($param2);
-        //     $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
-        //     redirect(base_url() . 'admin/manage_online_exam', 'refresh');
-        // }
+        if($param1 == 'delete'){
+            $this->crud_model->delete_online_exam($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+            redirect(base_url() . 'admin/manage_online_exam', 'refresh');
+        }
 
 
         $page_data['page_name'] = 'manage_online_exam';
@@ -294,15 +280,7 @@ class Admin extends CI_Controller {
         $online_exam_id = $this->db->get_where('question_bank', array('question_bank_id' => $question_id))->row()->online_exam_id;
         $type = $this->db->get_where('question_bank', array('question_bank_id' => $question_id))->row()->type;
         if ($task == "update") {
-            if ($type == 'multiple_choice') {
-                $this->crud_model->update_multiple_choice_question($question_id);
-            }
-            elseif($type == 'true_false'){
-                $this->crud_model->update_true_false_question($question_id);
-            }
-            elseif($type == 'fill_in_the_blanks'){
-                $this->crud_model->update_fill_in_the_blanks_question($question_id);
-            }
+            $this->crud_model->update_multiple_choice_question($question_id);
             redirect(site_url('admin/manage_online_exam_question/'.$online_exam_id), 'refresh');
         }
         $page_data['question_id'] = $question_id;

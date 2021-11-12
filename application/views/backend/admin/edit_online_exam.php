@@ -1,6 +1,4 @@
 <?php $online_exam = $this->db->get_where('online_exam', array('online_exam_id' => $online_exam_id))->row_array();
-      $sections = $this->db->get_where('section', array('section_id' => $online_exam['section_id']))->result_array();
-      $subjects = $this->db->get_where('subject', array('subject_id' => $online_exam['subject_id']))->result_array();
 ?>
 <div class="col-sm-12">
     <div class="panel panel-info">
@@ -12,19 +10,18 @@
                 <div class="form-group">
                     <label class="col-md-12" for="example-text"><?php echo get_phrase('exam_title');?></label>
                     <div class="col-sm-12">
-                        <input type="text" class="form-control" value="<?php echo $online_exam['title'];?>" name="exam_title"/>
+                        <input type="text" class="form-control" value="<?php echo $online_exam['title'];?>" name="title"/>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-12" for="example-text"><?php echo get_phrase('class');?></label>
+                    <label class="col-md-12" for="example-text"><?php echo get_phrase('Program');?></label>
                     <div class="col-sm-12">
-                        <select name="class_id" id = "class_id" class="form-control selectboxit"
-                            onchange="return get_class_section_subject(this.value)" required>
-                            <option value=""><?php echo get_phrase('select_class');?></option>
-                            <?php $classes = $this->db->get('class')->result_array();
-                                foreach($classes as $row): ?>
-                                <option value="<?php echo $row['class_id'];?>"<?php if($row['class_id'] == $online_exam['class_id']) echo 'selected="selected"' ;?>><?php echo $row['name'];?></option>
+                        <select name="program_id" id = "program_id" class="form-control selectboxit" required>
+                            <option value=""><?php echo get_phrase('Select Program');?></option>
+                            <?php $programs = $this->db->get('program')->result_array();
+                                foreach($programs as $row): ?>
+                                <option value="<?php echo $row['program_id'];?>"<?php if($row['program_id'] == $online_exam['program_id']) echo 'selected="selected"' ;?>><?php echo $row['name'];?></option>
                             <?php
                             endforeach;
                             ?>
@@ -33,63 +30,26 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-12" for="example-text"><?php echo get_phrase('section');?></label>
+                    <label class="col-md-12" for="example-text"><?php echo get_phrase('Start Date');?></label>
                     <div class="col-sm-12">
-                        <select name="section_id" id = "section_id" class="form-control" required>
-                            <option value=""><?php echo get_phrase('select_class');?></option>
-                            <?php 
-                                foreach($sections as $row): ?>
-                                <option value="<?php echo $row['section_id'];?>"<?php if($row['section_id'] == $online_exam['section_id']) echo 'selected="selected"' ;?>><?php echo $row['name'];?></option>
-                            <?php
-                            endforeach;
-                            ?>
-                        </select>
+                        <input class="form-control m-r-10" name="start_date" type="date" value="<?php echo  date('Y-m-d', strtotime($online_exam['start_date'])); ?>" id="example-date-input" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-12" for="example-text"><?php echo get_phrase('subject');?></label>
+                    <label class="col-md-12" for="example-text"><?php echo get_phrase('End Date');?></label>
                     <div class="col-sm-12">
-                        <select name="subject_id" id = "subject_id" class="form-control" required>
-                            <option value=""><?php echo get_phrase('select_class');?></option>
-                            <?php 
-                                foreach($subjects as $row): ?>
-                                <option value="<?php echo $row['subject_id'];?>"<?php if($row['subject_id'] == $online_exam['subject_id']) echo 'selected="selected"' ;?>><?php echo $row['name'];?></option>
-                            <?php
-                            endforeach;
-                            ?>
-                        </select>
+                        <input class="form-control m-r-10" name="end_date" type="date" value="<?php echo date('Y-m-d', strtotime($online_exam['end_date'])); ?>" id="example-date-input" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-12" for="example-text"><?php echo get_phrase('exam_date');?></label>
-                    <div class="col-sm-12">
-                        <input class="form-control m-r-10" name="exam_date" type="date" value="<?php echo date('Y-m-d', $online_exam['exam_date']); ?>" id="example-date-input" required>
-                    </div>
-                </div>
-
-                <!-- .row -->
-                <div class="row">
-                    <label class="col-md-12" for="example-text"><?php echo get_phrase('exam_time');?></label>
-                    <div class="col-lg-6">
-                        <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
-                            <input type="text" name="time_start" class="form-control" value="<?php echo $online_exam['time_start'];?>">
-                            <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
+                    <label class="col-md-12" for="example-text"><?php echo get_phrase('Duration in Minutes');?></label>
+                        <div class="col-sm-12">
+                            <input type="number" name="duration" value="<?php echo $online_exam['duration'];?>" class="form-control" placeholder="Write duration exam here"  required>
                         </div>
-                    </div>
-                    
-                    <div class="col-lg-6">
-                        <div class="input-group clockpicker " data-placement="left" data-align="top" data-autoclose="true">
-                            <input type="text" name="time_end" class="form-control" value="<?php echo $online_exam['time_end'];?>">
-                            <span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span> </span>
-                        </div>
-                    </div>
-
+                    <div class="col-sm-3" style="text-align: left; line-height: 30px;"> </div>
                 </div>
-                <!-- /.row -->
-
-                <hr>
 
                 <div class="form-group">
                     <label class="col-md-12" for="example-text"><?php echo get_phrase('exam_percentage');?></label>
@@ -99,12 +59,6 @@
                     <div class="col-sm-3" style="text-align: left; line-height: 30px;"> <span style="color:#FF0000">Write minimum percentage</span></div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-md-12" for="example-text"><?php echo get_phrase('instructions');?></label>
-                    <div class="col-sm-12">
-                        <textarea rows="5" name="instruction" class="form-control" placeholder="please specify exam instructions here" ><?php echo $online_exam['instruction'];?></textarea>
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-info btn-rounded btn-block btn-sm"><i class="fa fa-plus"></i>&nbsp;<?php echo get_phrase('add_exam'); ?></button>

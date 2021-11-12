@@ -8,8 +8,6 @@
             <i class="fa fa-list"></i>&nbsp;&nbsp;<?php echo get_phrase('question_list');?>&nbsp;&nbsp;
 			<a href="<?php echo base_url();?>admin/manage_online_exam"><button type="button"  class="btn btn-defualt btn-xs pull-right"><i class="fa fa-mail-reply-all"></i>
 			&nbsp;back</button></a>
-			
-			<hr>
                                 
 <div class="row">		
 			  <div class="col-sm-6">
@@ -78,40 +76,14 @@
                         <tr>
                             <td><b><?php echo get_phrase('exam_title');?></b></td>
                             <td><?php echo $online_exam_details['title'];?></td>
-                            <td><b><?php echo get_phrase('date');?></b></td>
-                            <td><?php echo date('d M, Y', $online_exam_details['exam_date']);?></td>
-                        </tr>
-                        <tr>
-                            <td><b><?php echo get_phrase('class');?></b></td>
-                            <td><?php echo $this->db->get_where('class', array('class_id' => $online_exam_details['class_id']))->row()->name;?></td>
-                            <td><b><?php echo get_phrase('time');?></b></td>
-                            <td><?php echo $online_exam_details['time_start'].'-'. $online_exam_details['time_end'];?></td>
-                        </tr>
-                        <tr>
-                            <td><b><?php echo get_phrase('section');?></b></td>
-                            <td><?php echo $this->db->get_where('section', array('section_id' => $online_exam_details['section_id']))->row()->name;?></td>
                             <td><b><?php echo get_phrase('passing_%');?></b></td>
                             <td><?php echo $online_exam_details['minimum_percentage'].'%';?></td>
                         </tr>
                         <tr>
-                            <td><b><?php echo get_phrase('subject');?></b></td>
-                            <td><?php echo $this->db->get_where('subject', array('subject_id' => $online_exam_details['subject_id']))->row()->name;?></td>
-                            <td><b><?php echo get_phrase('total_marks');?></b></td>
-                            <td>
-                            
-                            <?php if (sizeof($added_question_info) == 0):?>
-                                    <?php echo 0; ?>
-                                <?php elseif (sizeof($added_question_info) > 0):?>
-                                    <?php
-                                        $total_mark = 0;
-                                        foreach ($added_question_info as $single_question) {
-                                            $total_mark = $total_mark + $single_question['mark'];
-                                        }
-                                        echo $total_mark;
-                                     ?>
-                                <?php endif; ?>
-                            
-                            </td>
+                            <td><b><?php echo get_phrase('Start Date');?></b></td>
+                            <td><?php echo date('Y-m-d',strtotime($online_exam_details['start_date']));?></td>
+                            <td><b><?php echo get_phrase('End Date');?></b></td>
+                            <td><?php echo date('Y-m-d',strtotime($online_exam_details['end_date']));?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -124,27 +96,7 @@
                              <i class="fa fa-plus"></i>&nbsp;&nbsp;<?php echo get_phrase('add_question');?>
                                 <hr>
 								
-								<div class="form-group">
-					<label class="col-md-12" for="example-text"><?php echo get_phrase('question_type');?></label>
-                    <div class="col-sm-12">
-                        <select class="form-control" id="showForm" onchange = "ShowHideDiv()">
-                            <option value="empty"><?php echo get_phrase('select_question_type');?></option>
-                            <option value="multiple_choice"><?php echo get_phrase('multiple_choice');?></option>
-                            <option value="true_false"><?php echo get_phrase('true_or_false');?></option>
-                            <option value="fill_in_the_blanks"><?php echo get_phrase('fill_in_the_blanks');?></option>
-                        </select>
-						
-						
-
-
-
-                    </div>
-                </div>
-                <br><br>
-<div id="fill_in_the_blanks" style="display: none"><?php include 'online_exam_add_fill_in_the_blanks.php'; ?></div>
-<div id="multiple_choice" style="display: none"><?php include 'online_exam_add_multiple_choice.php'; ?></div>
-<div id="true_false" style="display: none"><?php include 'online_exam_add_true_false.php'; ?></div>
-<div id="empty" style="display: none" class="alert alert-info">Hello! Please select a question type</div>
+                <div id="multiple_choice" ><?php include 'online_exam_add_multiple_choice.php'; ?></div>
 
             </div>
         </div>
@@ -157,20 +109,6 @@
     </div>
 </div>
 </div>
-
-<script type="text/javascript">
-    function ShowHideDiv() {
-        var showForm = document.getElementById("showForm");
-        var multiple_choice = document.getElementById("multiple_choice");
-        var true_false = document.getElementById("true_false");
-        var fill_in_the_blanks = document.getElementById("fill_in_the_blanks");
-        var empty = document.getElementById("empty");
-        multiple_choice.style.display = showForm.value == "multiple_choice" ? "block" : "none";
-        true_false.style.display = showForm.value == "true_false" ? "block" : "none";
-        fill_in_the_blanks.style.display = showForm.value == "fill_in_the_blanks" ? "block" : "none";
-        empty.style.display = showForm.value == "empty" ? "block" : "none";
-    }
-</script>
 
 <script type="text/javascript">
 
