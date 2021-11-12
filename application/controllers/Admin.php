@@ -13,6 +13,7 @@ class Admin extends CI_Controller {
                 $this->load->model('materi_model');
                 $this->load->model('submateri_model');
                 $this->load->model('quiz_model');
+                $this->load->model('question_type_model');
                 /********** *Set your default time zone here **********/
                 timezone();
         
@@ -185,6 +186,31 @@ class Admin extends CI_Controller {
 
     }
 
+    function question_type($param1 = null, $param2 = null, $param3 = null){
+
+        if($param1 == 'create'){
+            $this->question_type_model->createQuestion_TypeFunction();
+            $this->session->set_flashdata('flash_message', get_phrase('Data created successfully'));
+            redirect(base_url() . 'admin/question_type', 'refresh');
+        }
+
+        if($param1 == 'update'){
+            $this->question_type_model->updateQuestion_TypeFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data updated successfully'));
+            redirect(base_url() . 'admin/question_type', 'refresh');
+        }
+
+        if($param1 == 'delete'){
+            $this->question_type_model->deleteQuestion_TypeFunction($param2);
+            $this->session->set_flashdata('flash_message', get_phrase('Data deleted successfully'));
+            redirect(base_url() . 'admin/question_type', 'refresh');
+        }
+
+        $page_data['page_name'] = 'question_type';
+        $page_data['page_title'] =  get_phrase('Manage Question Type');
+        $this->load->view('backend/index', $page_data);
+
+    }
 
     function create_online_exam(){
         $page_data['page_name'] = 'add_online_exam';

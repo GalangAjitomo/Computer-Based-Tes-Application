@@ -6,10 +6,12 @@
 	<label class="col-md-12" for="example-text"><?php echo get_phrase('Question Category');?></label>
     <div class="col-sm-12">
         <select class="form-control" name="category" id="category">
-            <option value=""><?php echo get_phrase('Select Category');?></option>
-            <option value="A"><?php echo get_phrase('Category A');?></option>
-            <option value="B"><?php echo get_phrase('Category B');?></option>
-            <option value="C"><?php echo get_phrase('Category C');?></option>
+            <option value="">Select Category</option>
+                                                
+            <?php $select_questions = $this->question_type_model->selectquestion_type();
+            foreach($select_questions as $key => $question) : ?>
+                <option value="<?php echo $question['name'];?>"><?php echo $question['name'];?></option>
+            <?php endforeach;?>
         </select>
     </div>
 </div>

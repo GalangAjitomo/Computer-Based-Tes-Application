@@ -22,6 +22,16 @@ class Login extends CI_Controller {
         
      }
 
+     function register_index()
+     {
+        $this->load->view('backend/register');
+     }
+
+     function register()
+     {
+        $this->login_model->registerfunction();
+     }
+
 
 
      function logout(){

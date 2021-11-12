@@ -39,38 +39,54 @@ $system_title = $this->db->get_where('settings', array('type' => 'system_title')
 </div>
 <section id="wrapper" class="login-register">
   <div class="login-box login-sidebar">
-    <br><br><br>
+  <br><br><br>
     <div class="white-box">
-	    <h2 class="box-title m-b-20" align="center">
-			<img src="<?php echo base_url() ?>uploads/logo2-round.png" class="img-circle" width="150" height="150"/></h2>			
+	 <h2 class="box-title m-b-20" align="center">
+					<img src="<?php echo base_url() ?>uploads/logo2-round.png" class="img-circle" width="150" height="150"/></h2>			
 					
-	    <form method="post" role="form" id="loginform" class="form-horizontal form-material" action="<?php echo base_url();?>login/check_login">
+	<form method="post" role="form" id="loginform" class="form-horizontal form-material" action="<?php echo base_url();?>login/register/create">
+
+  <h3 class="box-title m-t-40 m-b-0" style="width:100%">Register Now</h3>
+        <div class="form-group m-t-20">
+          <div class="col-xs-12">
+            <input class="form-control" type="text" required="" name="name" placeholder="Name" style="width:100%">
+          </div>
+        </div>
         <div class="form-group ">
           <div class="col-xs-12">
-            <input class="form-control" type="email" name="email" required="" placeholder="<?php echo get_phrase('email');?>" style="width:100%">
+            <input class="form-control" type="text" required="" name="email" placeholder="Email" style="width:100%">
+          </div>
+        </div>
+        <div class="form-group ">
+          <div class="col-xs-12">
+            <input class="form-control" type="password" required="" name="password" placeholder="Password" style="width:100%">
           </div>
         </div>
         <div class="form-group">
-          <div class="col-xs-12" >
-              <input class="form-control" type="password" name="password" required="" placeholder="<?php echo get_phrase('passord');?>" style="width:100%">
-          </div>
-        </div>
-        <div class="form-group text-center m-t-20">
           <div class="col-xs-12">
-            <button class="btn btn-info btn-rounded btn-sm btn-block text-uppercase waves-effect waves-light" type="submit" style="width:100%; color:white">
-              <?php echo get_phrase('log_in');?>
-            </button>
-            <div align="center"><img id="install_progress" src="<?php echo base_url() ?>assets/images/preloader.gif" style="margin-left: 20px; display: none"/></div>
+            <input class="form-control" type="password" required="" name="confirm_password" placeholder="Confirm Password" style="width:100%">
           </div>
         </div>
         <div class="form-group m-b-0">
           <div class="col-sm-12 text-center">
-            <p>Don't have an account? <a href="<?php echo base_url();?>login/register_index" class="text-primary m-l-5"><b>Sign Up</b></a></p>
+          <button class="btn btn-info btn-rounded btn-sm btn-block text-uppercase waves-effect waves-light" type="submit" style="width:100%; color:white">Sign Up</button>
           </div>
         </div>
+        <div class="form-group m-b-0">
+          <div class="col-sm-12 text-center">
+            <p>Already have an account? <a href="<?php echo base_url();?>login" class="text-primary m-l-5"><b>Sign In</b></a></p>
+          </div>
+        </div>
+      <div class="form-group text-center m-t-20">
+        <div class="col-xs-12">
+          <div align="center"><img id="install_progress" src="<?php echo base_url() ?>assets/images/preloader.gif" style="margin-left: 20px; display: none"/></div>
+        </div>
+      </div>
 					<br><br><br><br><br><br><br><br><br><br>
-      <?php echo form_close();?>
-	
+  <?php echo form_close();?>
+        
+  </div>
+  </div>
 </section>
 <script src="js/index.js"></script>	
 
@@ -107,26 +123,17 @@ $(document).ready(function(){
     icon:'warning',
     hideAfter: '3500',
     stack: 6
-    });
-});
-</script>
-<?php endif;?>
 
-<?php if (($this->session->flashdata('flash_message')) != ""): ?>
-	<script type="text/javascript">
-    $(document).ready(function() {
-        $.toast({
-			heading: 'Sucess!',
-            text: '<?php echo $this->session->flashdata('flash_message'); ?>',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'success',
-            hideAfter: 3500,
-            stack: 6
-        })
-    });
-    </script>
-	<?php endif; ?>
+  });
+
+});
+
+
+</script>
+
+
+
+<?php endif;?>
 
 
 
