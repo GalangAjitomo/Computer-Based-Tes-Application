@@ -31,7 +31,7 @@ class Student extends CI_Controller {
         if($this->session->userdata('student_login') != 1) redirect(base_url(). 'login', 'refresh');
         
        	$page_data['page_name'] = 'dashboard';
-        $page_data['page_title'] =  get_phrase('Student Dashboard');
+        $page_data['page_title'] =  get_phrase('Daftar Ujian');
         $this->load->view('backend/index', $page_data);
     }
 
@@ -71,11 +71,19 @@ class Student extends CI_Controller {
         
         if ($param1 == '') {
             $page_data['data'] = 'active';
-            $page_data['exams'] = $this->crud_model->available_exams($this->session->userdata('login_user_id'));
+            $page_data['exams'] = $this->crud_model->available_exams();
         }
 
         $page_data['page_name'] = 'online_exam';
         $page_data['page_title'] = get_phrase('online_exams');
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function ujian($param1 = null) {
+        
+        $page_data['soal'] = $this->crud_model->get_questions($param1);
+        $page_data['page_name'] = 'ujian';
+        $page_data['page_title'] = 'Ujian';
         $this->load->view('backend/index', $page_data);
     }
 

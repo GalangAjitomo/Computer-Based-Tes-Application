@@ -16,30 +16,20 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th><div><?php echo get_phrase('exam_name');?></div></th>
-							<th><div><?php echo get_phrase('subject');?></div></th>
-							<th><div><?php echo get_phrase('exam_date');?></div></th>
+							<th><div><?php echo get_phrase('Title');?></div></th>
+							<th><div><?php echo get_phrase('Start Date');?></div></th>
+							<th><div><?php echo get_phrase('End Date');?></div></th>
 							<th width="40%"><div><?php echo get_phrase('options');?></div></th>
 						</tr>
 					</thead>
 					<tbody>
-                        <?php
-                            foreach ($exams as $row):
-                                $current_time = time();
-                                $exam_start_time = strtotime(date('Y-m-d', $row['exam_date']).' '.$row['time_start']);
-                                $exam_end_time = strtotime(date('Y-m-d', $row['exam_date']).' '.$row['time_end']);
-                                if ($current_time > $exam_end_time)
-                                continue;
-                        ?>
 							<tr>
 								<td><?php echo $row['title'];?></td>
 								<td>
-									<?php echo $this->db->get_where('subject', array('subject_id' => $row['subject_id']))->row()->name;?>
+									<?php echo date('M d, Y', $row['start_date'])?>
 								</td>
 								<td>
-									<?php
-									echo '<b>'.get_phrase('date').':</b> '.date('M d, Y', $row['exam_date']).'<br>'.'<b>'.get_phrase('time').':</b> '.$row['time_start'].' - '.$row['time_end'];
-								?>
+									<?php echo date('M d, Y', $row['end_date'])?>
 								</td>
 								<td>
 									<?php if ($this->crud_model->check_availability_for_student($row['online_exam_id']) != "submitted"): ?>
@@ -63,7 +53,6 @@
 									<?php endif; ?>
 								</td>
 							</tr>
-					<?php endforeach; ?>
 					</tbody>
 				</table> 
 			</div>

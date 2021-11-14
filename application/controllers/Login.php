@@ -13,7 +13,7 @@ class Login extends CI_Controller {
 
     public function index() {
         if($this->session->userdata('admin_login') == 1) redirect(base_url(). 'admin/dashboard', 'refresh');
-        if($this->session->userdata('student_login') == 1) redirect(base_url(). 'student/dashboard', 'refresh');
+        if($this->session->userdata('student_login') == 1) redirect(base_url(). 'student/program', 'refresh');
         $this->load->view('backend/login');
     }
 

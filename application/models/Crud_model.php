@@ -54,23 +54,24 @@ class Crud_model extends CI_Model {
 
     function create_online_exam(){
         $start = $this->input->post('start_date');
+        $end = $this->input->post('end_date'). " " ."23:59:59";
         $data['title'] = $this->input->post('title');
         $data['program_id'] = $this->input->post('program_id');
         $data['minimum_percentage'] = $this->input->post('minimum_percentage');
-        $data['start_date'] = $this->input->post('start_date');
-        $data['end_date'] = $this->input->post('end_date');
+        $data['start_date'] = $start;
+        $data['end_date'] = $end;
         $data['duration'] = $this->input->post('duration');
 
         $this->db->insert('online_exam', $data);
     }
 
     function update_online_exam(){
-
+        $end = $this->input->post('end_date'). " " ."23:59:59";
         $data['title'] = $this->input->post('title');
         $data['program_id'] = $this->input->post('program_id');
         $data['minimum_percentage'] = $this->input->post('minimum_percentage');
         $data['start_date'] = $this->input->post('start_date');
-        $data['end_date'] = $this->input->post('end_date');
+        $data['end_date'] = $end;
         $data['duration'] = $this->input->post('duration');
         
         $this->db->where('online_exam_id', $this->input->post('online_exam_id'));
@@ -97,6 +98,7 @@ class Crud_model extends CI_Model {
             $correct_answers = $this->input->post('correct_answers');
         }
         $data['online_exam_id']     = $online_exam_id;
+        $data['no']           = $this->input->post('no');
         $data['question_title']     = $this->input->post('question_title');
         $data['category']           = $this->input->post('category');
         $data['options']            = json_encode($this->input->post('options'));
@@ -122,6 +124,7 @@ class Crud_model extends CI_Model {
         else{
             $correct_answers = $this->input->post('correct_answers');
         }
+        $data['no']           = $this->input->post('no');
         $data['question_title']     = $this->input->post('question_title');
         $data['category']           = $this->input->post('category');
         $data['options']            = json_encode($this->input->post('options'));
@@ -160,12 +163,7 @@ class Crud_model extends CI_Model {
 
 
     function available_exams($student_id) {
-        $running_year = get_settings('session');
-        $class_id = $this->db->get_where('student', array('student_id' => $student_id))->row()->class_id;
-        $section_id = $this->db->get_where('student', array('student_id' => $student_id))->row()->section_id;
-        $match = array('running_year' => $running_year, 'class_id' => $class_id, 'section_id' => $section_id, 'status' => 'published');
-        $this->db->order_by("exam_date", "dsc");
-        $exams = $this->db->where($match)->get('online_exam')->result_array();
+        $exams = $this->db->get('online_exam')->result_array();
         return $exams;
     }
 
@@ -269,6 +267,15 @@ class Crud_model extends CI_Model {
         $match = array('student_id' => $student_id, 'status' => 'submitted');
         $exams = $this->db->where($match)->get('online_exam_result')->result_array();
         return $exams;
+    }
+
+    function get_questions($exam_id){
+        $match = array('online_exam_id' => $exam_id);
+        $this->db->from('question_bank');
+        $this->db->where($match);
+        $this->db->order_by('no','DESC');
+        $questions = $this->db->get()->result_array();
+        return $questions;
     }
 
 

@@ -1,7 +1,13 @@
 <?php echo form_open(site_url('admin/manage_online_exam_question/'.$online_exam_id.'/add/multiple_choice') , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
 
 <input type="hidden" name="type" value="<?php echo $question_type;?>">
-
+<div class="form-group">
+    <label class="col-md-12" for="example-text">No</label>
+    <div class="col-sm-12">
+        <input type="number" name="no" class="form-control"  required>
+    </div>
+    <div class="col-sm-3" style="text-align: left; line-height: 30px;"> </div>
+</div>
 <div class="form-group">
 	<label class="col-md-12" for="example-text"><?php echo get_phrase('Question Category');?></label>
     <div class="col-sm-12">

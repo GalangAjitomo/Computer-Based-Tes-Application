@@ -1,3 +1,4 @@
+<?php var_dump($soal) ?>
 <div class="row">
     <div class="col-md-12">
         <h2 style="font-weight: bold; text-align: left;">Daftar Ujian</h2>
@@ -34,7 +35,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <a class="btn btn-block btn-success btn-rounded"  href="<?php echo base_url();?>student/ujian/<?php echo $row['online_exam_id'];?>" style="padding-top: 15px; padding-bottom: 15px;">Mulai Ujian</a>
+                        <a class="btn btn-block btn-success btn-rounded"  href="<?php echo base_url();?>student/ujian/<?php echo $row['online_exam_id'];?>')" style="padding-top: 15px; padding-bottom: 15px;">Mulai Ujian</a>
                     </div>
                 </div>
             </div>

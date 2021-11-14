@@ -27,7 +27,13 @@
                 </select>
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="col-md-12" for="example-text">No</label>
+            <div class="col-sm-12">
+                <input type="number" name="no" class="form-control" value="<?php echo $question_details['no']; ?>"  required>
+            </div>
+            <div class="col-sm-3" style="text-align: left; line-height: 30px;"> </div>
+        </div>
         <div class="form-group">
                  	<label class="col-md-12" for="example-text"><?php echo get_phrase('question_title');?></label>
                     <div class="col-sm-12">
