@@ -560,24 +560,6 @@
     <script src="<?php echo base_url(); ?>optimum/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
 	
 			
-<script src="<?php echo base_url(); ?>js/meteorEmoji.min.js"></script>
-  <script>
-    (() => {
-      new MeteorEmoji()
-    })()
-  </script>
-  
-
-// ADVANCED EXEMPLE
-
-// array with souds to cycle trough
-// the more in the array, the faster you can retrigger the click 
-var audio2 = [new Audio(audioUrl), new Audio(audioUrl), new Audio(audioUrl), new Audio(audioUrl), new Audio(audioUrl)]; // put it has much has you want
-var soundNb = 0; // counter
-
-$('.btn2').click( () => audio2[ soundNb++ % audio2.length ].play());
-
-</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
