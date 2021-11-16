@@ -11,24 +11,24 @@
                 <div class="row ml-2">
                     <div class="col-md-9">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-3">
                                 Ujian Dibuka :
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-3">
                                 Ujian Ditutup :
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-3">
                                 Durasi :
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-3">
                                 <i class="fa fa-calendar"> </i> <?php echo  date('Y-m-d H:i', strtotime($row['start_date'])); ?>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-3">
                                 <i class="fa fa-calendar"> </i> <?php echo  date('Y-m-d H:i', strtotime($row['end_date'])); ?>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-3">
                                 <i class="fa fa-clock-o"> </i> <?php echo $row['duration']; ?> menit
                             </div>
                         </div>
