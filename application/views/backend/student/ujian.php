@@ -1,23 +1,40 @@
+<style>
+.answer-button-holder{border:1px solid #e7e7e7;background-color:#f4f4f4;border-radius:10px;overflow:hidden}
+.answer-indicator-holder{position:absolute;top:0;bottom:0;left:10px;height:100%;display:flex;justify-content:center;align-items:center}
+.answer-indicator{width:30px;height:30px;border:2px solid #394d55;border-radius:30px;text-align:center;line-height:26px}
+.answer-button{width:100%;text-align:left;padding-left:50px;padding-top:15px;padding-bottom:15px;position:relative;cursor:pointer;border-bottom:1px solid #e7e7e7}
+.answer-button:last-child{border-bottom:none}
+.answer-button.active{background-color:#fff;color:#00c358}.answer-button.active .answer-indicator{border-color:#00c358;color:#00c358}
+.answer-button:active{background-color:#fff;color:#00c358}.answer-button:active .answer-indicator{border-color:#00c358;color:#00c358}
+
+</style>
 <div class="row">
+    <input type="hidden" id="code" name="code" value="<?php echo $code; ?>">
+    <input type="hidden" id="hdnNo" name="hdnNo" value="">
+    <input type="hidden" id="hdnTotal" name="total" value="">
     <div class="col-md-2">
         <div class="d-none d-md-block well well-sm">
-            <h5 style="color:dodgerblue;">Data Peserta</h5>
-            <h5 style="color:grey;">Nama</h5>
+            <h5 style="color:#00a8bb;"> <strong>Data Peserta</strong></h5>
+            <h5 style="color:grey;">Nama</h5> 
+            <h5> <label id="name"></label></h5> 
             <h5 style="color:grey;">ID</h5>
+            <h5> <label id="studentId"></label></h5> 
         </div>
         <div class="d-none d-md-block well well-sm">
-            <h5 style="color:dodgerblue;">Sisa Waktu</h5>
+            <h5 style="color:#00a8bb;"> <strong>Sisa Waktu</strong> </h5>
+            <h3 class="text-center">
+                <strong>...</strong></h3>
         </div>
         <div class="d-inline-block d-md-none text-center" style="margin-bottom: 10px; position: fixed; right: 50%; top: 5px; z-index: 9999; transform: translateX(50%);">
             <div class="d-inline-block">
-                <div class="text-tale">Sisa Waktu</div>
-                <h3 class="text-center">
+                <div class="text-tale"> <strong>Sisa Waktu</strong></div>
+                <h3 class="text-tale">
                 <strong>...</strong></h3>
             </div>
         </div>
-        <div class="d-none d-md-block well well-sm">
-            <div style="text-align: left;">
-                <h5 style="color:dodgerblue;">Keterangan Warna</h5>
+        <div class="well well-sm" style="text-align: left;display:none">
+            <div >
+                <h5 style="color:#00a8bb;"> <strong>Keterangan Warna</strong></h5>
                 <div>
                     <div style="border-radius: 12px; border: 2px solid transparent; width: 12px; height: 12px; background-color: red; display: inline-block;">
                     </div> : jawaban salah
@@ -38,10 +55,10 @@
         </div>
     </div>
     <div class="col-lg-7">
-        <div class="well well-sm">
+        <div class="well well-sm" style="display:none">
             <div class="row">
                 <div class="col">
-                    <h5 style="color:dodgerblue;">Hasil</h5>
+                    <h5 style="color:#00a8bb;"> <strong>Hasil</strong> </h5>
                 </div>
             </div>
             <div class="row">
@@ -66,22 +83,103 @@
             </div>
         </div>
         <div class="well well-sm p-2 d-flex d-md-none" style="margin-bottom: 10px; flex-direction: row; justify-content: space-between;">
-            <div><button class="btn btn-sm btn-outline btn-rounded btn-info my-2"><i class="fa fa-angle-left"></i> Nomor 50</button></div>
+            <div>
+                <button class="btn btn-sm btn-outline btn-rounded btn-info my-2">
+                    <i class="fa fa-angle-left"></i> Nomor 
+
+                </button></div>
             <div><button class="btn btn-sm btn-info btn-rounded my-2">Berikutnya <i class="fa fa-angle-right"></i></button></div>
         </div>
         <div class="well well-sm">
-            <div><div class="question" style="text-align: left;"><div class="text-tale"><strong>No:</strong> 1</div><div><span>Seorang pasien baru saja melewati proses bedah pada tulang belakangnya, sebelum dilakukan operasi pasien diberikan antinyeri untuk meredakan rasa nyeri yang sudah lama sekali muncul di tulang belakang. Nyeri tersebut masuk ke skala 4 bagi pasien tersebut.<br></span><span><br></span><span>Maka obat nyeri  yang direkomendasikan sebelum akhirnya pasien perlu di operasi adalah ?<br></span></div></div><div class="answer-button-holder mt-3"><div class="answer-button " disabled=""><div class="answer-indicator-holder"><div class="answer-indicator">A</div></div>Celecoxib</div><div class="answer-button " disabled=""><div class="answer-indicator-holder"><div class="answer-indicator">B</div></div>Fentanil</div><div class="answer-button " disabled=""><div class="answer-indicator-holder"><div class="answer-indicator">C</div></div>Kodein</div><div class="answer-button  active" disabled=""><div class="answer-indicator-holder"><div class="answer-indicator">D</div></div>Ibuprofen</div><div class="answer-button " disabled=""><div class="answer-indicator-holder"><div class="answer-indicator">E</div></div>Parasetamol</div></div><div class="mt-3"><strong class="text-tale">Kunci:</strong> C</div><div class="mt-3"><div class="text-tale"><strong>Penjelasan:</strong></div>Skala ringan (0-3) menggunakan PCT/NSAID tanpa OPIOID<br>Skala sedang (4-6) menggunakan PCT/NSAID dengan OPIOID ringan (kodein)<br>Skala berat (7-10) menggunakan PCT/NSAID dengan OPIOID berat (morfin/fentanil)<br><br>Untuk intraoperasi bisa menggunakan golongan fentanil<br>Alternatif lain dari penggunaan PCT/NSAID adalah antidepresan trisiklin atau obat kejang.<br><br>Referensi:<br>Dipiro<br><br>Kata Kunci:<br>Nyeri, skala 4<br></div><br><div><label class="checkbox-container" for="isDoubt" style="font-weight: normal;">ragu-ragu<input class="checkbox" disabled="" id="isDoubt" name="isDoubt" type="checkbox"><span class="checkmark"></span></label></div><div><button disabled="" class="btn btn-white btn-sm">kosongkan jawaban</button></div><hr><div class="text-center"><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: rgb(51, 51, 51); border-width: 2px; padding-left: 0px; padding-right: 0px;">1</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">2</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">3</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">4</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">5</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">6</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">7</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">8</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">9</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">10</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">11</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">12</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">13</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">14</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">15</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">16</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">17</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">18</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">19</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">20</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">21</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">22</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">23</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">24</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">25</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">26</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">27</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">28</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">29</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">30</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">31</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">32</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">33</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">34</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">35</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">36</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">37</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">38</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">39</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">40</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">41</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">42</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">43</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">44</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">45</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">46</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">47</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">48</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(253, 91, 97); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">49</button><button class="btn btn-white btn-sm m-1" style="width: 30px; color: rgb(255, 255, 255); background-color: rgb(46, 204, 113); border-color: transparent; border-width: 2px; padding-left: 0px; padding-right: 0px;">50</button></div></div>
+            <div class="row">
+                <div class="col">
+                    <div style="text-align: left;">            
+                        <h5 style="color:#00a8bb;">  <strong>No:</strong> <label id="no"></label> </h5>
+                        <h5 class="mb-2">
+                            <label id="pertanyaan"></label>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="answer-button-holder mt-3">
+                        <div class="answer-button " >
+                            <div class="answer-indicator-holder">
+                                <div class="answer-indicator">A</div>
+                            </div>
+                            <span id="A"></span> 
+                        </div>
+                        <div class="answer-button ">
+                            <div class="answer-indicator-holder">
+                                <div class="answer-indicator">B</div>
+                            </div>
+                            <span id="B"></span> 
+                        </div>
+                        <div class="answer-button ">
+                            <div class="answer-indicator-holder">
+                                <div class="answer-indicator">C</div>
+                            </div>
+                            <span id="C"></span> 
+                        </div>
+                        <div class="answer-button ">
+                            <div class="answer-indicator-holder">
+                                <div class="answer-indicator">D</div>
+                            </div>
+                            <span id="D"></span> 
+                        </div>
+                        <div class="answer-button ">
+                            <div class="answer-indicator-holder">
+                                <div class="answer-indicator">E</div>
+                            </div>
+                            <span id="E"></span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="afterExam" style="text-align: left;">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="mb-3"><strong  style="color:#00a8bb;">Kunci: </strong> <label id="kunci"></label></h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h5 style="color:#00a8bb;">  <strong>Penjelasan:</strong> </h5>
+                        <h5 class="mb-3"><label id="explanation"></label></h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h5>Refrensi:</h5>
+                        <h5 class="mb-3"><label id="reference"></label></h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h5>Kata Kunci:</h5>
+                        <h5 class="mb-3"><label id="keywords"></label></h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label class="checkbox-container" for="isDoubt" style="font-weight: normal;">
+                            <input class="checkbox" id="isDoubt" name="isDoubt" type="checkbox">ragu-ragu<span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-md-2">
         <div class="well well-sm d-md-block d-none">
-            <h5 style="color:dodgerblue;">Navigasi</h5>
-            <a class="btn btn-block btn-info btn-rounded"  href="<?php echo base_url();?>student/ujian/<?php echo $row['online_exam_id'];?>">Berikutnya <i class="fa fa-angle-right"></i></a>
-            <a class="btn btn-block btn-outline btn-rounded btn-info"  href="<?php echo base_url();?>student/ujian/<?php echo $row['online_exam_id'];?>"><i class="fa fa-angle-left"></i> Nomor 50 </a>
+            <h5 style="color:#00a8bb;"> <strong>Navigasi</strong> </h5>
+            <button id="btnNext" class="btn btn-block btn-info btn-rounded">Berikutnya <i class="fa fa-angle-right"></i></button>
+            <a id="btnPrev" href="#" class="btn btn-block btn-outline btn-rounded btn-info"><i class="fa fa-angle-left"></i> Sebelumnya </a>
         </div>
-        <div class="d-none d-md-block well well-sm text-center">
-            <h5 class="mb-5" style="color:dodgerblue;">Penyelesaian Soal</h5>
-            <h5 class="mb-5">Jumlah Soal : 50</h5>
+        <div class="well well-sm text-center" style="display:none">
+            <h5 class="mb-5" style="color:#00a8bb;"> <strong>Penyelesaian Soal</strong></h5>
+            <h5 class="mb-5">Jumlah Soal : <label id="jmlSoal"></label></h5>
             <h5 class="mb-5">Sudah Dijawab : 50</h5>
             <h5 class="mb-5">- Tanpa Ragu : 50</h5>
             <h5 class="mb-5">- Masih Ragu : 0</h5>
@@ -89,3 +187,89 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+
+$( document ).ready(function() {
+    var $code = $("#code").val();
+    $.ajax({
+            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ 1,
+            success: function(response){
+                var result = JSON.parse(response);
+                LoadQuestions(result);
+            }
+        });
+});
+
+$("#btnNext").click(function(){
+    var $code = $("#code").val();
+    var $no = $("#hdnNo").val();
+    var $total = $("#hdnTotal").val();
+    $no =  parseInt($no) + 1;
+    if($no > $total){
+        $no = 1;
+    }
+        $.ajax({
+            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+            success: function(response){
+                var result = JSON.parse(response);
+                LoadQuestions(result);
+            }
+    });
+});
+
+$("#btnPrev").click(function(){
+    var $code = $("#code").val();
+    var $no = $("#hdnNo").val();
+    var $total = $("#hdnTotal").val();
+    if($no == 1){
+        $no = $total;
+    }else{
+        $no = parseInt($no) - 1;
+    }
+        $.ajax({
+            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+            success: function(response){
+                var result = JSON.parse(response);
+                LoadQuestions(result);
+            }
+    });
+});
+
+function LoadQuestions(result){
+    let jawaban = ["A","B","C","D","E"]
+    console.log(result);
+    console.log(result["student"]);
+
+    //student
+    $("#name").html(result["student"]["name"]);
+    $("#studentId").html(result["student"]["student_id"]);
+
+    //total soal
+    $("#jmlSoal").html(result["total_soal"]);
+    $("#hdnTotal").val(result["total_soal"]);
+
+    //soal
+    console.log(result["soal"]);
+    $("#no").html(result["soal"]["no"]);
+    $("#hdnNo").val(result["soal"]["no"]);
+    $("#pertanyaan").html(result["soal"]["question_title"]);
+
+    //Kunci jawaban
+    var kunci = result["soal"]["correct_answers"]
+    var kunciJwb = parseInt(kunci) - 1;
+    $("#kunci").html(jawaban[kunciJwb]);
+    $("#explanation").html(result["soal"]["explanation"]);
+    $("#reference").html(result["soal"]["reference"]);
+    $("#keywords").html(result["soal"]["keywords"]);
+    
+    let options = [];
+    options = JSON.parse(result["soal"]["options"])
+    $("#A").html(options[0]);
+    $("#B").html(options[1]);
+    $("#C").html(options[2]);
+    $("#D").html(options[3]);
+    $("#E").html(options[4]);
+
+}
+</script>

@@ -79,12 +79,23 @@ class Student extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
-    function ujian($param1 = null) {
-        
-        $page_data['soal'] = $this->crud_model->get_questions($param1);
+    function ujian($code = null) {
+        $page_data['code'] = $code;
         $page_data['page_name'] = 'ujian';
         $page_data['page_title'] = 'Ujian';
         $this->load->view('backend/index', $page_data);
+    }
+
+    function ujianAjax($code = null, $no = 1) {
+        $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row()->online_exam_id;
+        $student_id = $this->session->userdata('login_user_id');
+        $page_data['total_soal'] = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id))->num_rows();
+        $page_data['soal'] = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id, 'no' => $no))->row_array();
+        $page_data['student'] = $this->db->get_where('student', array('student_id' => $student_id))->row_array();
+        $page_data['code'] = $code;
+        $page_data['page_name'] = 'ujian';
+        $page_data['page_title'] = 'Ujian';
+        echo json_encode($page_data);
     }
 
     function online_exam_result($param1 = null, $param2 = null) {

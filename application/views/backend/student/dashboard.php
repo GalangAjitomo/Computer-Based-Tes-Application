@@ -34,7 +34,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <a class="btn btn-block btn-success btn-rounded"  href="<?php echo base_url();?>student/ujian/<?php echo $row['online_exam_id'];?>" style="padding-top: 15px; padding-bottom: 15px;">Mulai Ujian</a>
+                        <a class="btn btn-block btn-success btn-rounded"  href="<?php echo base_url();?>student/ujian/<?php echo $row['code'];?>" style="padding-top: 15px; padding-bottom: 15px;">Mulai Ujian</a>
                     </div>
                 </div>
             </div>

@@ -28,7 +28,7 @@
                    
                     <li class="<?php if($page_name == 'dashboard') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/dashboard" class="waves-effect"><i class="ti-dashboard p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Dashboard');?></span></a> </li>
                     
-                    <li class="<?php if($page_name == 'online_exam' || $page_name == 'online_exam_take') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/online_exam" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Online Exam');?></span></a> </li>
+                    <!-- <li class="<?php if($page_name == 'online_exam' || $page_name == 'online_exam_take') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/online_exam" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Online Exam');?></span></a> </li> -->
                     <li class="<?php if($page_name == 'manage_profile') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/manage_profile" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu"><?php echo get_phrase('Manage Profile');?></span></a> </li>
                     <li class="<?php if($page_name == 'program') echo 'active'; ?>"> <a href="<?php echo base_url();?>student/program" class="waves-effect"><i class="fa fa-angle-double-right p-r-10"></i> <span class="hide-menu">Program</span></a> </li>
 

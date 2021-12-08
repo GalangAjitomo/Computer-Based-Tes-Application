@@ -53,6 +53,7 @@ class Crud_model extends CI_Model {
 
 
     function create_online_exam(){
+        $data['code']  = substr(md5(uniqid(rand(), true)), 0, 7);
         $start = $this->input->post('start_date');
         $end = $this->input->post('end_date'). " " ."23:59:59";
         $data['title'] = $this->input->post('title');
