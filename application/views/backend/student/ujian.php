@@ -137,7 +137,7 @@
                     </div>
                 </div>
             </div>
-            <div id="afterExam" style="text-align: left;">
+            <div id="afterExam" style="text-align:left;display:none">
                 <div class="row">
                     <div class="col">
                         <h5 class="mb-3"><strong  style="color:#00a8bb;">Kunci: </strong> <label id="kunci"></label></h5>
