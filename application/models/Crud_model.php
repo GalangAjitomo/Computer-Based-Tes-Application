@@ -171,11 +171,12 @@ class Crud_model extends CI_Model {
     
 
 
-    function change_online_exam_status_to_attended_for_student($online_exam_id = ""){
+    function change_online_exam_status_to_attended_for_student($online_exam_id = "",$question_bank_id = "",$timer = ""){
 
         $checker = array(
             'online_exam_id' => $online_exam_id,
-            'student_id' => $this->session->userdata('login_user_id')
+            'student_id' => $this->session->userdata('login_user_id'),
+            'question_bank_id' => $question_bank_id
         );
 
         if($this->db->get_where('online_exam_result', $checker)->num_rows() == 0){
@@ -183,7 +184,8 @@ class Crud_model extends CI_Model {
                 'status' => 'attended',
                 'online_exam_id' => $online_exam_id,
                 'student_id' => $this->session->userdata('login_user_id'),
-                'exam_started_timestamp' => strtotime("now")
+                'exam_started_timestamp' => $timer,
+                'question_bank_id' => $question_bank_id
             );
             $this->db->insert('online_exam_result', $inserted_array);
         }

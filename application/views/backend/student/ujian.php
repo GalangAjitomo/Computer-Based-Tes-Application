@@ -12,6 +12,9 @@
     <input type="hidden" id="code" name="code" value="<?php echo $code; ?>">
     <input type="hidden" id="hdnNo" name="hdnNo" value="">
     <input type="hidden" id="hdnTotal" name="total" value="">
+    <input type="hidden" id="timeout" name="timeout" value="<?php echo $countdowntimer; ?>">
+    <input type="hidden" id="active_exam" name="active_exam" value="<?php echo $this->session->userdata('active_exam')?>">
+
     <div class="col-md-2">
         <div class="d-none d-md-block well well-sm">
             <h5 style="color:#00a8bb;"> <strong>Data Peserta</strong></h5>
@@ -22,7 +25,8 @@
         </div>
         <div class="d-none d-md-block well well-sm">
             <h5 style="color:#00a8bb;"> <strong>Sisa Waktu</strong> </h5>
-            <h3 class="text-center">
+            
+            <h3 class="text-center countdowntimer">
                 <strong>...</strong></h3>
         </div>
         <div class="d-inline-block d-md-none text-center" style="margin-bottom: 10px; position: fixed; right: 50%; top: 5px; z-index: 9999; transform: translateX(50%);">
@@ -104,31 +108,31 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="answer-button-holder mt-3">
-                        <div class="answer-button " >
+                        <div class="answer-button" id="btn_A" >
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">A</div>
                             </div>
                             <span id="A"></span> 
                         </div>
-                        <div class="answer-button ">
+                        <div class="answer-button " id="btn_B">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">B</div>
                             </div>
                             <span id="B"></span> 
                         </div>
-                        <div class="answer-button ">
+                        <div class="answer-button " id="btn_C">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">C</div>
                             </div>
                             <span id="C"></span> 
                         </div>
-                        <div class="answer-button ">
+                        <div class="answer-button " id="btn_D">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">D</div>
                             </div>
                             <span id="D"></span> 
                         </div>
-                        <div class="answer-button ">
+                        <div class="answer-button " id="btn_E">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">E</div>
                             </div>
@@ -189,6 +193,77 @@
 </div>
 
 <script type="text/javascript">
+
+// localStorage.removeItem("timestamp");
+var timeout = parseInt($('#timeout').val());
+    
+var countDownDate = new Date();
+countDownDate.setMinutes(countDownDate.getMinutes()+timeout);
+var timestamp = countDownDate.getTime();
+
+if(localStorage.getItem("timestamp")==null)
+{
+    //store current time into local storage
+    localStorage.setItem("timestamp",timestamp);
+}
+
+  var x = setInterval(function() {
+
+  var now = new Date().getTime();
+  // Find the distance between current time and store time
+  var distance = localStorage.getItem("timestamp") - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+  // document.getElementById("demo").innerHTML = "<span class='btn btn-primary'>&nbsp;"+days + " Day </span>&nbsp;<span class='btn btn-success'>" + hours + " Hour </span>&nbsp;<span class='btn btn-info'>"
+  // + minutes + " Minute </span>&nbsp;<span class='btn btn-danger'>" + seconds + " Second </span>";
+
+  var html = hours + ': '+ minutes + ': ' + seconds;
+    $(".countdowntimer").html(html);
+
+   //check conditon of distance 
+  if (distance < 0) {
+    clearInterval(x);
+    var html ='EXPIRED';
+   $(".countdowntimer").html(html);
+  }
+}, 1000);
+
+// var timeout = 15;
+// var seconds = new Date();
+//     seconds.setDate(new Date().getSeconds()+timeout);
+// var countDownDate = new Date(seconds).getTime();
+
+// var x = setInterval(function() {
+
+//     var html ='';
+//     // Get today's date and time
+//     var now = new Date().getTime();
+
+//     // Find the distance between now and the count down date
+//     var distance = countDownDate - now;
+
+//     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+//     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+//     html = hours + ': '+ minutes + ': ' + seconds;
+//     $(".countdownntimer").html(html);
+
+    
+//     if (distance < 0) {
+//         clearInterval(x);
+//        html ='EXPIRED';
+//         $(".countdownntimer").html(html);
+//     }
+
+// }, 1000);
+
 
 $( document ).ready(function() {
     var $code = $("#code").val();
@@ -258,6 +333,7 @@ function LoadQuestions(result){
     //Kunci jawaban
     var kunci = result["soal"]["correct_answers"]
     var kunciJwb = parseInt(kunci) - 1;
+
     $("#kunci").html(jawaban[kunciJwb]);
     $("#explanation").html(result["soal"]["explanation"]);
     $("#reference").html(result["soal"]["reference"]);
@@ -270,6 +346,8 @@ function LoadQuestions(result){
     $("#C").html(options[2]);
     $("#D").html(options[3]);
     $("#E").html(options[4]);
+
+    $('#btn_B').addClass('active');
 
 }
 </script>

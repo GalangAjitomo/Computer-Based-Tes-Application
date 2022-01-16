@@ -79,8 +79,22 @@ class Student extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
-    function ujian($code = null) {
+    function ujian($code = null, $time = null) {
+        $this->session->set_userdata('active_exam', $code.'|1');
+        $timer = strtotime("now");
+        $student_id = $this->session->userdata('login_user_id');
+        $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row()->online_exam_id;
+        $question_bank_id = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id))->result();
+        
+        foreach ($question_bank_id as $online) {
+
+            $id_exam = $online->online_exam_id;
+            $id_question = $online->question_bank_id;
+            $this->crud_model->change_online_exam_status_to_attended_for_student($id_exam,$id_question,$timer);
+        }
+
         $page_data['code'] = $code;
+        $page_data['countdowntimer'] = $time;
         $page_data['page_name'] = 'ujian';
         $page_data['page_title'] = 'Ujian';
         $this->load->view('backend/index', $page_data);

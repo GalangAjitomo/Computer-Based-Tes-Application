@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <button class="btn btn-block btn-success btn-rounded btnUjian" onclick="startUjian('<?php echo $row['code'];?>')" style="padding-top: 15px; padding-bottom: 15px;">Mulai Ujian</button>
+                        <button class="btn btn-block btn-success btn-rounded btnUjian" onclick="startUjian('<?php echo $row['code'];?>|<?php echo $row['duration'];?>')" style="padding-top: 15px; padding-bottom: 15px;">Mulai Ujian</button>
                     </div>
                 </div>
             </div>
@@ -47,25 +47,53 @@
 
 <div class="modal fade" id="modalConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
     <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="exampleModalLabel1">Perhatian !</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h4 class="modal-body">Waktu akan dimulai dan tidak akan berhenti meski halaman ditutup, apa anda yakin mulai sekarang?</h4>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Confirm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel1">Perhatian !</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id_ujian" id="id_ujian">
+                <input type="hidden" name="timer" id="timer">
+                <h4 class="modal-body">Waktu akan dimulai dan tidak akan berhenti meski halaman ditutup, apa anda yakin mulai sekarang?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btnconfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
                     
 <script type="text/javascript">
+
+$( document ).ready(function() {
+
+    $(".btnconfirm").click(function(){
+
+        var $id_ujian = $('#id_ujian').val();
+        var $duration = $('#timer').val();
+        // localStorage.setItem("timestamp",0);
+        localStorage.removeItem("timestamp");
+        window.location.href = '<?php echo base_url();?>student/ujian/' + $id_ujian+'/'+ $duration;
+
+
+    });
+
+});
+
+
+
 function startUjian(code){
-    alert(code);
+    // alert(code);
+    var str = code.split('|');
+    var idujian = str[0];
+    var timer = str[1];
+    $('#id_ujian').val(idujian);
+    $('#timer').val(timer);
     $("#modalConfirmation").modal('show');
 }
+
+
+
 </script>

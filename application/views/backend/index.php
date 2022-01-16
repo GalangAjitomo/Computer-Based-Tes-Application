@@ -19,7 +19,6 @@
 	<?php include 'page_info.php';?>
 	<?php include $loginType.'/'.$page_name.'.php';?>
 		
-       			
 	<?php // include 'dashboard.php'; ?>
 				
 				
