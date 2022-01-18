@@ -171,7 +171,7 @@ class Crud_model extends CI_Model {
     
 
 
-    function change_online_exam_status_to_attended_for_student($online_exam_id = "",$question_bank_id = "",$timer = ""){
+    function change_online_exam_status_to_attended_for_student($online_exam_id = "",$question_bank_id = ""){
 
         $checker = array(
             'online_exam_id' => $online_exam_id,
@@ -189,6 +189,64 @@ class Crud_model extends CI_Model {
             );
             $this->db->insert('online_exam_result', $inserted_array);
         }
+    }
+
+    function run_exam($online_exam_id = "",$question_bank_id = "",$timer = ""){
+
+        $checker = array(
+            'online_exam_id' => $online_exam_id,
+            'student_id' => $this->session->userdata('login_user_id'),
+            'question_bank_id' => $question_bank_id
+        );
+
+        if($this->db->get_where('online_exam_result', $checker)->num_rows() == 0){
+            $inserted_array = array(
+                'status' => 'attended',
+                'online_exam_id' => $online_exam_id,
+                'student_id' => $this->session->userdata('login_user_id'),
+                'exam_started_timestamp' => $timer,
+                'question_bank_id' => $question_bank_id
+            );
+            $this->db->insert('online_exam_result', $inserted_array);
+        }else{
+            $this->db->where($checker);
+            $this->db->delete('online_exam_result');
+
+            $inserted_array = array(
+                'status' => 'attended',
+                'online_exam_id' => $online_exam_id,
+                'student_id' => $this->session->userdata('login_user_id'),
+                'exam_started_timestamp' => $timer,
+                'question_bank_id' => $question_bank_id
+            );
+            $this->db->insert('online_exam_result', $inserted_array);
+
+        }
+    }
+
+    function update_online_exam_result($online_exam_id = null, $jawab = null){
+
+        $checker = array(
+            'question_bank_id' => $online_exam_id,
+            'student_id' => $this->session->userdata('login_user_id')
+        );
+        $updated_array = array(
+            'status' => 'submitted',
+            'answer_script' => $jawab
+        );
+
+        $this->db->where($checker);
+        $this->db->update('online_exam_result', $updated_array);
+    }
+
+    function get_online_exam($question_bank_id){
+
+        $checker = array(
+            'question_bank_id' => $online_exam_id,
+            'student_id' => $this->session->userdata('login_user_id')
+        );
+
+        return $this->db->get_where('online_exam_result', array('question_bank_id' => $question_bank_id))->row()->$answer_script;
     }
 
     function submit_online_exam($online_exam_id = null, $answer_script = null){

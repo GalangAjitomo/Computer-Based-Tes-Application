@@ -90,7 +90,7 @@ class Student extends CI_Controller {
 
             $id_exam = $online->online_exam_id;
             $id_question = $online->question_bank_id;
-            $this->crud_model->change_online_exam_status_to_attended_for_student($id_exam,$id_question,$timer);
+            $this->crud_model->run_exam($id_exam,$id_question,$timer);
         }
 
         $page_data['code'] = $code;
@@ -100,12 +100,36 @@ class Student extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
+    function update_exam()
+    {
+      $student_id = $this->session->userdata('login_user_id');
+      $id_question = $this->input->post("id_question");
+      $jawab = $this->input->post("jawab");
+      $this->crud_model->update_online_exam_result($id_question,$jawab);
+
+      $return_result = array("status" => TRUE);
+      echo json_encode($return_result);
+
+    }
+
+    function get_answer_exam()
+    {
+        $id_question = $this->input->post("id_question");
+        $jawab = $this->crud_model->get_online_exam($id_question);
+
+        $return_result = array("status" => TRUE,"answer"=>$jawab);
+        echo json_encode($return_result);
+
+    }
+
+
     function ujianAjax($code = null, $no = 1) {
         $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row()->online_exam_id;
         $student_id = $this->session->userdata('login_user_id');
         $page_data['total_soal'] = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id))->num_rows();
         $page_data['soal'] = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id, 'no' => $no))->row_array();
         $page_data['student'] = $this->db->get_where('student', array('student_id' => $student_id))->row_array();
+        $page_data['jawaban'] = $this->db->get_where('online_exam_result', array('question_bank_id' =>$page_data['soal']['question_bank_id']))->row_array();
         $page_data['code'] = $code;
         $page_data['page_name'] = 'ujian';
         $page_data['page_title'] = 'Ujian';

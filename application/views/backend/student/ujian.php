@@ -108,31 +108,33 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="answer-button-holder mt-3">
-                        <div class="answer-button" id="btn_A" >
+                        <input type="hidden" name="jawab" id="jawab">
+                        <input type="hidden" name="id_question" id="id_question">
+                        <div class="answer-button arranswer" id="select_1" >
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">A</div>
                             </div>
                             <span id="A"></span> 
                         </div>
-                        <div class="answer-button " id="btn_B">
+                        <div class="answer-button arranswer" id="select_2">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">B</div>
                             </div>
                             <span id="B"></span> 
                         </div>
-                        <div class="answer-button " id="btn_C">
+                        <div class="answer-button arranswer" id="select_3">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">C</div>
                             </div>
                             <span id="C"></span> 
                         </div>
-                        <div class="answer-button " id="btn_D">
+                        <div class="answer-button arranswer" id="select_4">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">D</div>
                             </div>
                             <span id="D"></span> 
                         </div>
-                        <div class="answer-button " id="btn_E">
+                        <div class="answer-button arranswer" id="select_5">
                             <div class="answer-indicator-holder">
                                 <div class="answer-indicator">E</div>
                             </div>
@@ -272,6 +274,7 @@ $( document ).ready(function() {
             success: function(response){
                 var result = JSON.parse(response);
                 LoadQuestions(result);
+                $("#jawab").val('');
             }
         });
 });
@@ -280,38 +283,117 @@ $("#btnNext").click(function(){
     var $code = $("#code").val();
     var $no = $("#hdnNo").val();
     var $total = $("#hdnTotal").val();
+    var $jawab = $("#jawab").val();
+
+    var $id_question = $("#id_question").val();
+    if($jawab =="")
+    {
+        alert("Silahkan pilih jawaban terlebih dahulu");
+        return
+    }
+
     $no =  parseInt($no) + 1;
     if($no > $total){
         $no = 1;
     }
-        $.ajax({
-            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-            success: function(response){
-                var result = JSON.parse(response);
-                LoadQuestions(result);
-            }
-    });
+        // $.ajax({
+        //     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+        //     success: function(response){
+        //         var result = JSON.parse(response);
+        //         LoadQuestions(result);
+        //     }
+        // });
+
+    var postvar = {'id_question':$id_question,'jawab':$jawab};
+    $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
+        if(data.status){
+            $.ajax({
+                url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+                success: function(response){
+                    var result = JSON.parse(response);
+                    LoadQuestions(result);
+                    var jawab_exam = result["jawaban"]["answer_script"];
+                    $("#jawab").val(jawab_exam);
+                    $("#select_"+jawab_exam).addClass('active');
+                }
+            });
+        }
+    }, "json");
+
+});
+
+$(".arranswer").click(function(){
+    $(".arranswer").removeClass('active');
+    var idjwb = $(this).attr("id").split("_");
+    var str = idjwb[1];
+    $('#jawab').val(str);
+
+    $('#select_'+str).addClass('active');
 });
 
 $("#btnPrev").click(function(){
     var $code = $("#code").val();
     var $no = $("#hdnNo").val();
     var $total = $("#hdnTotal").val();
+    var $id_question = $("#id_question").val();
+    var $jawab = $("#jawab").val();
+
+    if($jawab =="")
+    {
+        alert("Silahkan pilih jawaban terlebih dahulu");
+        return
+    }
+
     if($no == 1){
         $no = $total;
     }else{
         $no = parseInt($no) - 1;
     }
-        $.ajax({
-            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-            success: function(response){
-                var result = JSON.parse(response);
-                LoadQuestions(result);
+        // $.ajax({
+        //     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+        //     success: function(response){
+        //         var result = JSON.parse(response);
+        //         LoadQuestions(result);
+        //     }
+        // });
+
+        // var postvar = {'id_question':$id_question};
+        // $.post("<?php echo base_url();?>student/get_answer_exam",postvar, function( data ) { 
+        //     if(data.status){  
+        //         $.ajax({
+        //             url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+        //             success: function(response){
+        //                 var result = JSON.parse(response);
+        //                 LoadQuestions(result);
+
+        //                 $('#jawab').val(str);
+        //                 $('#select_'+str).addClass('active');
+        //             }
+        //         });
+        //     }
+        // }, "json");
+        var postvar = {'id_question':$id_question,'jawab':$jawab};
+        $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
+            if(data.status){
+
+                $.ajax({
+                    url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+                    success: function(response){
+                        var result = JSON.parse(response);
+                        LoadQuestions(result);
+                        var jawab_exam = result["jawaban"]["answer_script"];
+                        $("#jawab").val(jawab_exam);
+                        $("#select_"+jawab_exam).addClass('active');
+                    }
+                });
             }
-    });
+        }, "json");
 });
 
 function LoadQuestions(result){
+
+    $(".arranswer").removeClass('active');
+
     let jawaban = ["A","B","C","D","E"]
     console.log(result);
     console.log(result["student"]);
@@ -347,7 +429,16 @@ function LoadQuestions(result){
     $("#D").html(options[3]);
     $("#E").html(options[4]);
 
-    $('#btn_B').addClass('active');
+    $("#id_question").val(result["soal"]["question_bank_id"]);
 
+    // var jawab_exam = result["jawaban"]["answer_script"];
+
+    // if(empty(jawab_exam) || jawab_exam == "")
+    // {
+    //     //nothing
+    // }else{
+    //     $("#jawab").val(jawab_exam);
+    //     $("#select_"+jawab_exam).addClass('active');
+    // }
 }
 </script>
