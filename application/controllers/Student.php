@@ -32,6 +32,7 @@ class Student extends CI_Controller {
         
        	$page_data['page_name'] = 'dashboard';
         $page_data['page_title'] =  get_phrase('Daftar Ujian');
+
         $this->load->view('backend/index', $page_data);
     }
 
@@ -79,33 +80,95 @@ class Student extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
 
-    function ujian($code = null, $time = null) {
-        $this->session->set_userdata('active_exam', $code.'|1');
-        $timer = strtotime("now");
+    function ujian($code = null, $time = null, $start = null) {
+
+        // $timer = strtotime(date('d-m-y h:i:s'));
         $student_id = $this->session->userdata('login_user_id');
-        $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row()->online_exam_id;
-        $question_bank_id = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id))->result();
+        $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row_array();
+
+        $question_bank_id = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id['online_exam_id']))->result();
         
         foreach ($question_bank_id as $online) {
 
             $id_exam = $online->online_exam_id;
             $id_question = $online->question_bank_id;
-            $this->crud_model->run_exam($id_exam,$id_question,$timer);
+            $insert_exam = $this->crud_model->run_exam($id_exam,$id_question,$start);
+        }
+        if($insert_exam)
+        {
+            $page_data['active_exam'] = 0;
+            $page_data['countdowntimer'] = $time;
+        }else{
+            $checker = array(
+                'online_exam_id' => $online_exam_id['online_exam_id'],
+                'student_id' => $this->session->userdata('login_user_id')
+            );
+            $cek_time = $this->db->get_where('online_exam_result', $checker)->row()->exam_started_timestamp;
+            $page_data['active_exam'] = 1;
+            $page_data['countdowntimer'] = $time;
+            $page_data['timezone'] = $cek_time;
         }
 
         $page_data['code'] = $code;
-        $page_data['countdowntimer'] = $time;
+       
         $page_data['page_name'] = 'ujian';
         $page_data['page_title'] = 'Ujian';
         $this->load->view('backend/index', $page_data);
     }
+
+    //  function ujian() {
+
+    //     // $timer = strtotime(date('d-m-y h:i:s'));
+    //     $student_id = $this->session->userdata('login_user_id');
+    //     $code = $this->input->post('id_ujian');
+    //     $limit = $this->input->post('duration');
+    //     $start_timezone = $this->input->post('timezone');
+    //     $start = $this->input->post('nowtime');
+  
+    //     $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row_array();
+
+    //     $question_bank_id = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id['online_exam_id']))->result();
+    //     foreach ($question_bank_id as $online) {
+
+    //         $id_exam = $online->online_exam_id;
+    //         $id_question = $online->question_bank_id;
+    //         $insert_exam = $this->crud_model->run_exam($id_exam,$id_question,$start,$start_timezone);
+    //     }
+    //     if($insert_exam)
+    //     {
+    //         $page_data['active_exam'] = 0;
+    //         $page_data['countdowntimer'] = $limit;
+    //     }else{
+          
+    //         $checker = array(
+    //             'online_exam_id' => $online_exam_id['online_exam_id'],
+    //             'student_id' => $this->session->userdata('login_user_id')
+    //         );
+    //         $cek_time = $this->db->get_where('online_exam_result', $checker)->row()->start_timezone;
+
+    //         $page_data['active_exam'] = 1;
+    //         $page_data['countdowntimer'] = $limit;
+    //         $page_data['timezone'] = $cek_time;
+    //     }
+
+    //     $page_data['code'] = $code;
+       
+    //     $page_data['page_name'] = 'ujian';
+    //     $page_data['page_title'] = 'Ujian';
+    //     $this->load->view('backend/index', $page_data);
+
+    //     // $return_result = array("status" => TRUE);
+    //     // echo json_encode($page_data);
+    // }
+
 
     function update_exam()
     {
       $student_id = $this->session->userdata('login_user_id');
       $id_question = $this->input->post("id_question");
       $jawab = $this->input->post("jawab");
-      $this->crud_model->update_online_exam_result($id_question,$jawab);
+      $isDoubt = $this->input->post("isDoubt");
+      $this->crud_model->update_online_exam_result($id_question,$jawab,$isDoubt);
 
       $return_result = array("status" => TRUE);
       echo json_encode($return_result);

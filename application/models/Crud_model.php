@@ -191,8 +191,8 @@ class Crud_model extends CI_Model {
         }
     }
 
-    function run_exam($online_exam_id = "",$question_bank_id = "",$timer = ""){
-
+    function run_exam($online_exam_id = "",$question_bank_id = "",$timer = "",$timezone = ""){
+        $query = false;
         $checker = array(
             'online_exam_id' => $online_exam_id,
             'student_id' => $this->session->userdata('login_user_id'),
@@ -205,26 +205,29 @@ class Crud_model extends CI_Model {
                 'online_exam_id' => $online_exam_id,
                 'student_id' => $this->session->userdata('login_user_id'),
                 'exam_started_timestamp' => $timer,
+                'start_timezone' => $timezone,
                 'question_bank_id' => $question_bank_id
             );
-            $this->db->insert('online_exam_result', $inserted_array);
-        }else{
-            $this->db->where($checker);
-            $this->db->delete('online_exam_result');
-
-            $inserted_array = array(
-                'status' => 'attended',
-                'online_exam_id' => $online_exam_id,
-                'student_id' => $this->session->userdata('login_user_id'),
-                'exam_started_timestamp' => $timer,
-                'question_bank_id' => $question_bank_id
-            );
-            $this->db->insert('online_exam_result', $inserted_array);
-
+            $query = $this->db->insert('online_exam_result', $inserted_array);
         }
+        // }else{
+        //     $this->db->where($checker);
+        //     $this->db->delete('online_exam_result');
+
+        //     $inserted_array = array(
+        //         'status' => 'attended',
+        //         'online_exam_id' => $online_exam_id,
+        //         'student_id' => $this->session->userdata('login_user_id'),
+        //         'exam_started_timestamp' => $timer,
+        //         'question_bank_id' => $question_bank_id
+        //     );
+        //     $this->db->insert('online_exam_result', $inserted_array);
+
+        // }
+        return $query;
     }
 
-    function update_online_exam_result($online_exam_id = null, $jawab = null){
+    function update_online_exam_result($online_exam_id = null, $jawab = null, $isDoubt = null){
 
         $checker = array(
             'question_bank_id' => $online_exam_id,
@@ -232,7 +235,8 @@ class Crud_model extends CI_Model {
         );
         $updated_array = array(
             'status' => 'submitted',
-            'answer_script' => $jawab
+            'answer_script' => $jawab,
+            'isDoubt' => $isDoubt
         );
 
         $this->db->where($checker);
