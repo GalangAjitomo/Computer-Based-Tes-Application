@@ -19,7 +19,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 // $root=(isset($_SERVER["HTTPS"]) ? "https://" : "http://").$_SERVER["HTTP_HOST"];
 // $root.= str_replace(basename($_SERVER["SCRIPT_NAME"]), "", $_SERVER["SCRIPT_NAME"]);
-$config["base_url"] = 'http://localhost:8080/Computer-Based-Tes-Application';
+$config["base_url"] = 'http://localhost/Computer-Based-Tes-Application';
 
 date_default_timezone_set('Asia/Jakarta');
 
