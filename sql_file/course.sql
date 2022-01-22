@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2022 at 06:14 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Generation Time: Jan 22, 2022 at 02:19 PM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 7.4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -51,7 +52,7 @@ INSERT INTO `admin` (`admin_id`, `name`, `email`, `password`, `phone`, `status`)
 CREATE TABLE `ci_sessions` (
   `id` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `data` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -157,12 +158,12 @@ CREATE TABLE `myprogram` (
 CREATE TABLE `online_exam` (
   `online_exam_id` int(11) UNSIGNED NOT NULL,
   `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `title` text COLLATE utf8_unicode_ci,
+  `title` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `program_id` int(11) DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `duration` int(11) DEFAULT NULL,
-  `minimum_percentage` text COLLATE utf8_unicode_ci,
+  `minimum_percentage` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -185,16 +186,32 @@ INSERT INTO `online_exam` (`online_exam_id`, `code`, `title`, `program_id`, `sta
 CREATE TABLE `online_exam_result` (
   `online_exam_result_id` int(11) UNSIGNED NOT NULL,
   `online_exam_id` int(11) DEFAULT NULL,
+  `question_bank_id` int(11) DEFAULT NULL,
   `student_id` int(11) DEFAULT NULL,
-  `answer_script` longtext COLLATE utf8_unicode_ci,
-  `obtained_mark` text COLLATE utf8_unicode_ci,
-  `status` text COLLATE utf8_unicode_ci,
-  `exam_started_timestamp` longtext COLLATE utf8_unicode_ci,
-  `result` text COLLATE utf8_unicode_ci,
+  `answer_script` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
+  `isDoubt` int(1) DEFAULT NULL,
+  `obtained_mark` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `exam_started_timestamp` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_timezone` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
+  `result` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `pin` longtext COLLATE utf8_unicode_ci NOT NULL,
   `serial` longtext COLLATE utf8_unicode_ci NOT NULL,
   `counter` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `online_exam_result`
+--
+
+INSERT INTO `online_exam_result` (`online_exam_result_id`, `online_exam_id`, `question_bank_id`, `student_id`, `answer_script`, `isDoubt`, `obtained_mark`, `status`, `exam_started_timestamp`, `start_timezone`, `result`, `pin`, `serial`, `counter`) VALUES
+(460, 6, 8, 4, '1', 1, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
+(461, 6, 9, 4, '1', 1, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
+(462, 6, 10, 4, '5', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
+(463, 6, 11, 4, '4', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
+(464, 6, 12, 4, '2', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
+(465, 6, 13, 4, '3', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
+(466, 6, 14, 4, '2', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -231,10 +248,10 @@ CREATE TABLE `question_bank` (
   `question_bank_id` int(11) UNSIGNED NOT NULL,
   `online_exam_id` int(11) DEFAULT NULL,
   `no` int(11) NOT NULL,
-  `question_title` longtext COLLATE utf8_unicode_ci,
+  `question_title` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `category` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `options` longtext COLLATE utf8_unicode_ci,
-  `correct_answers` longtext COLLATE utf8_unicode_ci,
+  `options` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
+  `correct_answers` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `explanation` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `reference` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `keywords` varchar(250) COLLATE utf8_unicode_ci NOT NULL
@@ -337,10 +354,10 @@ CREATE TABLE `student` (
   `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `sex` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `phone` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `address` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `address` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `password` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `session` longtext
+  `session` longtext DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -492,71 +509,85 @@ ALTER TABLE `submateri`
 --
 ALTER TABLE `admin`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `general_message`
 --
 ALTER TABLE `general_message`
   MODIFY `general_message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `language`
 --
 ALTER TABLE `language`
   MODIFY `phrase_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `materi`
 --
 ALTER TABLE `materi`
   MODIFY `materi_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `myprogram`
 --
 ALTER TABLE `myprogram`
   MODIFY `myprogram_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `online_exam`
 --
 ALTER TABLE `online_exam`
   MODIFY `online_exam_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT for table `online_exam_result`
 --
 ALTER TABLE `online_exam_result`
-  MODIFY `online_exam_result_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `online_exam_result_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=467;
+
 --
 -- AUTO_INCREMENT for table `program`
 --
 ALTER TABLE `program`
   MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `question_bank`
 --
 ALTER TABLE `question_bank`
   MODIFY `question_bank_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
 --
 -- AUTO_INCREMENT for table `question_type`
 --
 ALTER TABLE `question_type`
   MODIFY `question_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `quiz`
 --
 ALTER TABLE `quiz`
   MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
   MODIFY `settings_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
   MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
 --
 -- AUTO_INCREMENT for table `submateri`
 --
 ALTER TABLE `submateri`
   MODIFY `submateri_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- Constraints for dumped tables
 --
@@ -584,6 +615,7 @@ ALTER TABLE `quiz`
 --
 ALTER TABLE `submateri`
   ADD CONSTRAINT `submateri_ibfk_1` FOREIGN KEY (`materi_id`) REFERENCES `materi` (`materi_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
