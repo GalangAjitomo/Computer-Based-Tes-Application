@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="col-lg-7">
-        <div class="well well-sm" style="display:none">
+        <div class="well well-sm" id="hasil_skor" style="display:none">
             <div class="row">
                 <div class="col">
                     <h5 style="color:#00a8bb;"> <strong>Hasil</strong> </h5>
@@ -108,8 +108,8 @@
             </div>
             <div class="row mb-3">
                 <div class="col">
-                    <div class="answer-button-holder mt-3">
-                        <input type="hidden" name="jawab" id="jawab">
+                    <div class="answer-button-holder mt-3 mb-2">
+                        <input type="hidden" name="jawab" id="jawab" value="0">
                         <input type="hidden" name="id_question" id="id_question">
                         <div class="answer-button arranswer" id="select_1" >
                             <div class="answer-indicator-holder">
@@ -142,9 +142,14 @@
                             <span id="E"></span> 
                         </div>
                     </div>
-                        <label class="checkbox-container" for="cek_isDoubt" style="font-weight: normal;">
-                            <input class="checkbox" id="cek_isDoubt" name="cek_isDoubt" type="checkbox">ragu-ragu
+                    <div class="col mb-2">
+                        <label class="form-check-label" for="cek_isDoubt" style="font-weight: normal;">
+                            <input class="form-check-input" id="cek_isDoubt" name="cek_isDoubt" type="checkbox"> ragu-ragu
                         </label>
+                    </div>
+                     <div class="col mb-2">
+                        <button class="btn-outline btn-rounded btn-info btn-kosong">kosongkan jawaban</button>
+                    </div>
                 </div>
             </div>
             <div id="afterExam" style="text-align:left;display:none">
@@ -225,6 +230,9 @@
 
 <script type="text/javascript">
 
+$(document).ready(function($) {
+
+    // $('[name="cek_isDoubt"]').removeAttr('checked');
 // localStorage.removeItem("timestamp");
 if($('#active_exam').val() == 1)
 {
@@ -238,20 +246,22 @@ if($('#active_exam').val() == 1)
 
 // var time = new Date().getTime(); // get your number
 // var date = new Date(time); // cre
+    var timeout = parseInt($('#timeout').val());
     var waktumulai = $('#timezone').val();
     var now = new Date().getTime();
 
     var waktulewat = now-waktumulai;
 
 
-
-    var countDownDate = new Date();
-    countDownDate.setMinutes(countDownDate.getMinutes());
+    var countDownDate = new Date(0,0,0,0,0,now);
+    countDownDate.setMilliseconds(countDownDate.getMilliseconds()-waktulewat);
     var timestamp = countDownDate.getTime();
 
-    var countDownDate = timeout-parseInt($('#timeout').val());
-    console.log(timeout);
-    var timestamp = countDownDate;
+console.log(countDownDate);
+    // var countDownDate = timeout-parseInt($('#timeout').val());
+
+   
+
 
 }else{
 
@@ -280,9 +290,6 @@ if(localStorage.getItem("timestamp")==null)
       var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-      // document.getElementById("demo").innerHTML = "<span class='btn btn-primary'>&nbsp;"+days + " Day </span>&nbsp;<span class='btn btn-success'>" + hours + " Hour </span>&nbsp;<span class='btn btn-info'>"
-      // + minutes + " Minute </span>&nbsp;<span class='btn btn-danger'>" + seconds + " Second </span>";
 
       var html = hours + ': '+ minutes + ': ' + seconds;
         $(".countdowntimer").html(html);
@@ -295,64 +302,43 @@ if(localStorage.getItem("timestamp")==null)
       }
     }, 1000);
 
-// var timeout = 15;
-// var seconds = new Date();
-//     seconds.setDate(new Date().getSeconds()+timeout);
-// var countDownDate = new Date(seconds).getTime();
-
-// var x = setInterval(function() {
-
-//     var html ='';
-//     // Get today's date and time
-//     var now = new Date().getTime();
-
-//     // Find the distance between now and the count down date
-//     var distance = countDownDate - now;
-
-//     var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-//     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
 
-//     html = hours + ': '+ minutes + ': ' + seconds;
-//     $(".countdownntimer").html(html);
-
-    
-//     if (distance < 0) {
-//         clearInterval(x);
-//        html ='EXPIRED';
-//         $(".countdownntimer").html(html);
-//     }
-
-// }, 1000);
-
-
-$( document ).ready(function() {
- 
     var $code = $("#code").val();
     $.ajax({
             url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ 1,
             success: function(response){
                 var result = JSON.parse(response);
+               
                 LoadQuestions(result);
+                      
                 var jawab_exam = result["jawaban"]["answer_script"];
                 var isDoubt = result["jawaban"]["isDoubt"];
                     $("#jawab").val(jawab_exam);
                     $("#select_"+jawab_exam).addClass('active');
                 
-                if(parseInt(isDoubt) == 1)
-                {
-                    $('[name="cek_isDoubt"]').attr('checked','checked');
-                }else{
-                    $('[name="cek_isDoubt"]').removeAttr('checked');  
-                }
+                setTimeout(function(){
+                        if(parseInt(isDoubt) !=  1)
+                        {
+                            $('[name="cek_isDoubt"]').removeAttr('checked');  
+                        }
+                }, 1000);
+                
                 
             }
         });
 
+    $(document).on('click', '.btn-kosong', function(){
+        $('#jawab').val(0);
+        $(".arranswer").removeClass('active');
+    });
+
+
+
 });
 
 $("#btnNext").click(function(){
+
     var $code = $("#code").val();
     var $no = $("#hdnNo").val();
     var $total = $("#hdnTotal").val();
@@ -366,11 +352,11 @@ $("#btnNext").click(function(){
     }
 
     var $id_question = $("#id_question").val();
-    if($jawab =="")
-    {
-        alert("Silahkan pilih jawaban terlebih dahulu");
-        return
-    }
+    // if($jawab =="")
+    // {
+    //     alert("Silahkan pilih jawaban terlebih dahulu");
+    //     return
+    // }
 
     $no =  parseInt($no) + 1;
     if($no > $total){
@@ -391,18 +377,20 @@ $("#btnNext").click(function(){
                 url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
                 success: function(response){
                     var result = JSON.parse(response);
-                    LoadQuestions(result);
-                    var jawab_exam = result["jawaban"]["answer_script"];
-                    var isDoubt = result["jawaban"]["isDoubt"];
-                        $("#jawab").val(jawab_exam);
-                        $("#select_"+jawab_exam).addClass('active');
                     
-                    if(parseInt(isDoubt) == 1)
-                    {
-                        $('[name="cek_isDoubt"]').attr('checked','checked');
-                    }else{
-                        $('[name="cek_isDoubt"]').removeAttr('checked');  
-                    }
+                     LoadQuestions(result);
+
+                    // var jawab_exam = result["jawaban"]["answer_script"];
+                    var isDoubt = result["jawaban"]["isDoubt"];
+                    //     $("#jawab").val(jawab_exam);
+                    //     $("#select_"+jawab_exam).addClass('active');
+                    
+                  
+                            // if(parseInt(isDoubt) !=  1)
+                            // {
+                            //     $('[name="cek_isDoubt"]').removeAttr('checked');  
+                            // }
+ 
 
                     if($no == $total)
                     {
@@ -426,7 +414,11 @@ $("#btnKumpulkan").click(function(){
     $('#ketWarna').attr('style','display:block;');
     $('#afterExam').attr('style','display:block;');
     $('#total_jawab').attr('style','display:block;');
+    $('#hasil_skor').attr('style','display:block;');
 
+    $(".arranswer").attr('style','pointer-events: none;');
+    $("#cek_isDoubt").prop('disabled',true);
+    $('.btn-kosong').prop('disabled',true);
 });
 
 $(".arranswer").click(function(){
@@ -456,11 +448,11 @@ $("#btnPrev").click(function(){
         $isDoubt = 0;
     }
 
-    if($jawab =="")
-    {
-        alert("Silahkan pilih jawaban terlebih dahulu");
-        return
-    }
+    // if($jawab =="")
+    // {
+    //     alert("Silahkan pilih jawaban terlebih dahulu");
+    //     return
+    // }
 
     if($no == 1){
         $no = $total;
@@ -498,18 +490,20 @@ $("#btnPrev").click(function(){
                     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
                     success: function(response){
                         var result = JSON.parse(response);
+
                         LoadQuestions(result);
-                        var jawab_exam = result["jawaban"]["answer_script"];
+
+                        
+                        // var jawab_exam = result["jawaban"]["answer_script"];
                         var isDoubt = result["jawaban"]["isDoubt"];
-                            $("#jawab").val(jawab_exam);
-                            $("#select_"+jawab_exam).addClass('active');
-                            alert(isDoubt);
-                        if(parseInt(isDoubt) == 1)
-                        {
-                            $('[name="cek_isDoubt"]').attr('checked','checked');
-                        }else{
-                            $('[name="cek_isDoubt"]').removeAttr('checked');  
-                        }
+                        //     $("#jawab").val(jawab_exam);
+                        //     $("#select_"+jawab_exam).addClass('active');
+                            
+
+                                // if(parseInt(isDoubt) !=  1)
+                                // {
+                                //     $('[name="cek_isDoubt"]').removeAttr('checked');  
+                                // }
 
                         if($no == $total)
                         {
@@ -527,6 +521,8 @@ $("#btnPrev").click(function(){
 
 function LoadQuestions(result){
 
+    // $.ajaxSetup({async:false});
+$('[name="cek_isDoubt"]').removeAttr('checked');  
     $(".arranswer").removeClass('active');
 
     let jawaban = ["A","B","C","D","E"]
@@ -566,14 +562,25 @@ function LoadQuestions(result){
 
     $("#id_question").val(result["soal"]["question_bank_id"]);
 
-    // var jawab_exam = result["jawaban"]["answer_script"];
+    var jawab_exam = result["jawaban"]["answer_script"];
+            $("#jawab").val(jawab_exam);
+            $("#select_"+jawab_exam).addClass('active');
 
-    // if(empty(jawab_exam) || jawab_exam == "")
-    // {
-    //     //nothing
-    // }else{
-    //     $("#jawab").val(jawab_exam);
-    //     $("#select_"+jawab_exam).addClass('active');
-    // }
+    var isDoubt = result["jawaban"]["isDoubt"];
+     
+             
+    if(isDoubt == 1)
+    {
+
+        $('[name="cek_isDoubt"]').prop('checked', true);
+
+    }else{
+
+
+        $('[name="cek_isDoubt"]').removeAttr('checked');  
+    }
+
+    // $.ajaxSetup({async:true});
+
 }
 </script>
