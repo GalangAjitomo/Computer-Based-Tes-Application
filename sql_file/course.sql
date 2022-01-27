@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2022 at 02:19 PM
+-- Generation Time: Jan 27, 2022 at 03:43 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.14
 
@@ -189,7 +189,7 @@ CREATE TABLE `online_exam_result` (
   `question_bank_id` int(11) DEFAULT NULL,
   `student_id` int(11) DEFAULT NULL,
   `answer_script` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
-  `isDoubt` int(1) DEFAULT NULL,
+  `isDoubt` int(1) NOT NULL,
   `obtained_mark` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `exam_started_timestamp` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -197,21 +197,28 @@ CREATE TABLE `online_exam_result` (
   `result` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `pin` longtext COLLATE utf8_unicode_ci NOT NULL,
   `serial` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `counter` int(11) NOT NULL
+  `counter` int(11) NOT NULL,
+  `jwb_benar` int(11) NOT NULL,
+  `jwb_salah` int(11) NOT NULL,
+  `hasil_skor` text COLLATE utf8_unicode_ci NOT NULL,
+  `hasil_benar` int(11) NOT NULL,
+  `hasil_salah` int(11) NOT NULL,
+  `hasil_ragu` int(11) NOT NULL,
+  `finish_exam` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `online_exam_result`
 --
 
-INSERT INTO `online_exam_result` (`online_exam_result_id`, `online_exam_id`, `question_bank_id`, `student_id`, `answer_script`, `isDoubt`, `obtained_mark`, `status`, `exam_started_timestamp`, `start_timezone`, `result`, `pin`, `serial`, `counter`) VALUES
-(460, 6, 8, 4, '1', 1, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
-(461, 6, 9, 4, '1', 1, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
-(462, 6, 10, 4, '5', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
-(463, 6, 11, 4, '4', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
-(464, 6, 12, 4, '2', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
-(465, 6, 13, 4, '3', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0),
-(466, 6, 14, 4, '2', 0, NULL, 'submitted', '1642853225881', '', NULL, '', '', 0);
+INSERT INTO `online_exam_result` (`online_exam_result_id`, `online_exam_id`, `question_bank_id`, `student_id`, `answer_script`, `isDoubt`, `obtained_mark`, `status`, `exam_started_timestamp`, `start_timezone`, `result`, `pin`, `serial`, `counter`, `jwb_benar`, `jwb_salah`, `hasil_skor`, `hasil_benar`, `hasil_salah`, `hasil_ragu`, `finish_exam`) VALUES
+(551, 6, 8, 4, '0', 0, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 0, 1, '28.571428571429', 2, 5, 1, 1),
+(552, 6, 9, 4, '3', 0, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 1, 0, '28.571428571429', 2, 5, 1, 1),
+(553, 6, 10, 4, '0', 1, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 0, 1, '28.571428571429', 2, 5, 1, 1),
+(554, 6, 11, 4, '2', 0, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 0, 1, '28.571428571429', 2, 5, 1, 1),
+(555, 6, 12, 4, '3', 0, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 1, 0, '28.571428571429', 2, 5, 1, 1),
+(556, 6, 13, 4, '1', 0, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 0, 1, '28.571428571429', 2, 5, 1, 1),
+(557, 6, 14, 4, '3', 0, NULL, 'submitted', '1643294509649', '', NULL, '', '', 0, 0, 1, '28.571428571429', 2, 5, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -544,7 +551,7 @@ ALTER TABLE `online_exam`
 -- AUTO_INCREMENT for table `online_exam_result`
 --
 ALTER TABLE `online_exam_result`
-  MODIFY `online_exam_result_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=467;
+  MODIFY `online_exam_result_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=558;
 
 --
 -- AUTO_INCREMENT for table `program`

@@ -10,7 +10,7 @@
 
         <?php 
             echo  $warna = $ketujian = ''; 
-            $duration = $active_exam = 0;
+            $finish = $duration = $active_exam = 0;
 
             $cekUjian = $this->db->get_where('online_exam_result', array('online_exam_id' => $row['online_exam_id'],'counter'=>0,'student_id'=> trim($this->session->userdata('login_user_id'))));
             if ($cekUjian->num_rows() == 0) {
@@ -18,12 +18,20 @@
                 $ketujian = 'Mulai Ujian';
                 $active_exam = 0;
                 $duration = $row['duration'];
+                $finish = 0;
             }else{
                 $warna ='btn-primary';
                 $ketujian = 'Lanjutkan';
                 $active_exam = 1;
                 $results = $cekUjian->row_array();
                 $duration = $row['duration'];
+                $finish = 0;
+                if($results['finish_exam'] > 0)
+                {
+                    $warna ='btn-primary';
+                    $ketujian = 'Lihat Ujian';
+                    $finish = 1;
+                }
             }
         ?>
         <div class="col-lg-10">
@@ -56,7 +64,7 @@
                     </div>
                     <div class="col">
 
-                        <button class="btn btn-block <?php echo $warna ?> btn-rounded btnUjian" onclick="startUjian('<?php echo $row['code'];?>|<?php echo $duration ?>|<?php echo $active_exam ?>')" style="padding-top: 15px; padding-bottom: 15px;"><?php echo $ketujian ?></button>
+                        <button class="btn btn-block <?php echo $warna ?> btn-rounded btnUjian" onclick="startUjian('<?php echo $row['code'];?>|<?php echo $duration ?>|<?php echo $active_exam ?>|<?php echo $finish ?>')" style="padding-top: 15px; padding-bottom: 15px;"><?php echo $ketujian ?></button>
                     </div>
                 </div>
             </div>
@@ -117,14 +125,20 @@ function startUjian(code){
     var idujian = str[0];
     var timer = str[1];
     var active_exam = str[2];
+    var finish = str[3];
     
     $('#id_ujian').val(idujian);
     $('#timer').val(timer);
     $('#active_exam').val(active_exam);
-    if(active_exam == 1)
+    if(active_exam == 1 && finish == 0)
     {
-        $(".text_isi").text('Waktu sudah dimulai dan tidak akan berhenti meski halaman ditutup, apa anda yakin melanjutkan sekarang?')
+        $(".text_isi").text('Waktu sudah dimulai dan tidak akan berhenti meski halaman ditutup, apa anda yakin melanjutkan sekarang?');
     }
+    if(finish == 1)
+    {
+        $(".text_isi").text('Ujian anda sudah selesai, apa anda ingin lihat hasil sekarang?');
+    }
+
     $("#modalConfirmation").modal('show');
 }
 

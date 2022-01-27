@@ -243,6 +243,65 @@ class Crud_model extends CI_Model {
         $this->db->update('online_exam_result', $updated_array);
     }
 
+    function update_nilai($where,$data)
+    {
+        $this->db->where($where);
+        $this->db->update('online_exam_result',$data);
+    }
+
+    function final_result_exam($online_exam_id)
+    {
+        $array_final = array();
+        $checker = array(
+            'online_exam_id' => $online_exam_id,
+            'student_id' => $this->session->userdata('login_user_id')
+        );
+        $online_exam_result = $this->db->get_where('online_exam_result', $checker)->result_array();
+        $jwb_benar = $jwb_salah = $jwb_ragu = 0;
+        $skor = $total_tanpa_ragu = $total_isi = $total_soal = $total_benar = $total_salah = $total_ragu = $total_kosong = 0;
+        foreach ($online_exam_result as $question) {
+              $jwb_benar = trim($question['jwb_benar']);
+              $jwb_salah = trim($question['jwb_salah']);
+              $jwb_ragu = trim($question['isDoubt']);
+              $jwb_kosong = trim($question['answer_script']);
+
+              
+              $total_benar += $jwb_benar;
+              $total_salah += $jwb_salah;
+              $total_ragu += $jwb_ragu;
+
+              if($jwb_kosong == 0)
+              {
+                $total_kosong++; 
+              }
+
+              $total_isi = $total_benar + $total_salah;
+              $total_tanpa_ragu = $total_isi - $total_ragu;
+
+              $total_soal++;
+        }
+        $skor = $total_benar / $total_soal * 100;
+
+        $update_array = array('hasil_benar' => $total_benar,
+                                'hasil_salah' => $total_salah,
+                                'hasil_ragu' => $total_ragu,
+                                'hasil_skor' => $skor,
+                                'finish_exam' => 1);
+
+        $this->db->where($checker);
+        $this->db->update('online_exam_result', $update_array);
+
+        $array_final['total_isi'] = $total_isi;
+        $array_final['total_benar'] = $total_benar;
+        $array_final['total_salah'] = $total_salah;
+        $array_final['total_ragu'] = $total_ragu;
+        $array_final['total_tanpa_ragu'] = $total_tanpa_ragu;
+        $array_final['total_kosong'] = $total_kosong;
+        $array_final['skor'] = number_format($skor, 0);
+
+        return $array_final;
+    }
+
     function get_online_exam($question_bank_id){
 
         $checker = array(

@@ -15,6 +15,7 @@
     <input type="hidden" id="timeout" name="timeout" value="<?php echo $countdowntimer; ?>">
     <input type="hidden" id="timezone" name="timezone" value="<?php echo $timezone; ?>">
     <input type="hidden" id="active_exam" name="active_exam" value="<?php echo $active_exam ?>">
+    <input type="hidden" id="finish_exam" name="finish_exam" value="">
 
     <div class="col-md-2">
         <div class="d-none d-md-block well well-sm">
@@ -80,11 +81,11 @@
             <div class="row">
                 <div class="col-4">
                     <div style="font-size: 22px;">
-                        <i class="fa fa-check" style="color: rgb(186, 220, 88);"></i> 32
+                        <i class="fa fa-check" style="color: rgb(186, 220, 88);"></i> <label id="jwb_benar"></label>
                     </div>
                 </div>
-                <div class="col-4"><div style="font-size: 22px;"><i class="fa fa-times" style="color: rgb(235, 77, 75);"></i> 18</div></div>
-                <div class="col-4"><div style="font-size: 22px;"><i class="fa fa-trophy" style="color: rgb(249, 202, 36);"></i> 64</div></div>
+                <div class="col-4"><div style="font-size: 22px;"><i class="fa fa-times" style="color: rgb(235, 77, 75);"></i> <label id="jwb_salah"></label></div></div>
+                <div class="col-4"><div style="font-size: 22px;"><i class="fa fa-trophy" style="color: rgb(249, 202, 36);"></i> <label id="skor"></label></div></div>
             </div>
         </div>
         <div class="well well-sm p-2 d-flex d-md-none" style="margin-bottom: 10px; flex-direction: row; justify-content: space-between;">
@@ -109,7 +110,7 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="answer-button-holder mt-3 mb-2">
-                        <input type="hidden" name="jawab" id="jawab" value="0">
+                        <input type="hidden" name="jawab" id="jawab" value='0'>
                         <input type="hidden" name="id_question" id="id_question">
                         <div class="answer-button arranswer" id="select_1" >
                             <div class="answer-indicator-holder">
@@ -176,13 +177,13 @@
                         <h5 class="mb-3"><label id="keywords"></label></h5>
                     </div>
                 </div>
-                <div class="row">
+               <!--  <div class="row">
                     <div class="col">
                         <label class="checkbox-container" for="isDoubt" style="font-weight: normal;">
                             <input class="checkbox" id="isDoubt" name="isDoubt" type="checkbox">ragu-ragu<span class="checkmark"></span>
                         </label>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -190,7 +191,7 @@
         <div class="well well-sm d-md-block d-none">
             <h5 style="color:#00a8bb;"> <strong>Navigasi</strong> </h5>
             <button id="btnNext" class="btn btn-block btn-info btn-rounded">Berikutnya <i class="fa fa-angle-right"></i></button>
-            <button id="btnKumpulkan" class="btn btn-block btn-rounded btn-danger" style="display:none;">Kumpulkan Jawaban</button>
+            <button id="btnKumpulkan" class="btn btn-block btn-rounded btn-danger" style="display:none;">Kumpulkan</button>
             <a id="btnPrev" href="#" class="btn btn-block btn-outline btn-rounded btn-info"><i class="fa fa-angle-left"></i> Sebelumnya </a>
         </div>
         <div class="well well-sm d-md-block d-none">
@@ -200,10 +201,10 @@
         <div id="total_jawab" class="well well-sm text-center" style="display:none;">
             <h5 class="mb-5" style="color:#00a8bb;"> <strong>Penyelesaian Soal</strong></h5>
             <h5 class="mb-5">Jumlah Soal : <label id="jmlSoal"></label></h5>
-            <h5 class="mb-5">Sudah Dijawab : 50</h5>
-            <h5 class="mb-5">- Tanpa Ragu : 50</h5>
-            <h5 class="mb-5">- Masih Ragu : 0</h5>
-            <h5 class="mb-5"> Belum Dijawab : 0</h5>
+            <h5 class="mb-5">Sudah Dijawab : <label id="jmlJwb"></label></h5>
+            <h5 class="mb-5">- Tanpa Ragu : <label id="jmlTanpaRagu"></label></h5>
+            <h5 class="mb-5">- Masih Ragu : <label id="jmlRagu"></label></h5>
+            <h5 class="mb-5"> Belum Dijawab : <label id="jmlKosong"></label></h5>
         </div>
     </div>
 </div>
@@ -309,20 +310,52 @@ if(localStorage.getItem("timestamp")==null)
             url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ 1,
             success: function(response){
                 var result = JSON.parse(response);
-               
-                LoadQuestions(result);
-                      
-                var jawab_exam = result["jawaban"]["answer_script"];
-                var isDoubt = result["jawaban"]["isDoubt"];
-                    $("#jawab").val(jawab_exam);
-                    $("#select_"+jawab_exam).addClass('active');
-                
-                setTimeout(function(){
-                        if(parseInt(isDoubt) !=  1)
-                        {
-                            $('[name="cek_isDoubt"]').removeAttr('checked');  
+                if(result["jawaban"]["finish_exam"] > 0)
+                {
+                    LoadQuestions(result);
+
+                    var $jawab = $("#jawab").val();
+                    if($jawab.length == 0)
+                    {
+                        var $jawab = 0;
+                    }else{
+                        var $jawab = $("#jawab").val();
+                    }
+                    
+                    var $cek_isDoubt = document.getElementById("cek_isDoubt");
+                    if($cek_isDoubt.checked == true)
+                    {
+                        $isDoubt = 1;
+                    }else{
+                        $isDoubt = 0;
+                    }
+                    var $id_question = $("#id_question").val();
+                    var $code = $("#code").val();
+                    var $no = $("#hdnNo").val();
+
+                    var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt,'code':$code,'no':$no};
+                    $.post("<?php echo base_url();?>/student/final_exam",postvar, function( data ) {
+                        if(data.status){
+                            LoadJawaban(data.data);
+
                         }
-                }, 1000);
+                    }, "json");
+                }else{
+                    LoadQuestions(result);
+                      
+                    var jawab_exam = result["jawaban"]["answer_script"];
+                    var isDoubt = result["jawaban"]["isDoubt"];
+                        $("#jawab").val(jawab_exam);
+                        $("#select_"+jawab_exam).addClass('active');
+                    
+                    setTimeout(function(){
+                            if(parseInt(isDoubt) !=  1)
+                            {
+                                $('[name="cek_isDoubt"]').removeAttr('checked');  
+                            }
+                    }, 1000);
+                }
+                
                 
                 
             }
@@ -343,6 +376,14 @@ $("#btnNext").click(function(){
     var $no = $("#hdnNo").val();
     var $total = $("#hdnTotal").val();
     var $jawab = $("#jawab").val();
+
+    if($jawab.length == 0)
+    {
+        var $jawab = 0;
+    }else{
+        var $jawab = $("#jawab").val();
+    }
+
     var $cek_isDoubt = document.getElementById("cek_isDoubt");
     if($cek_isDoubt.checked == true)
     {
@@ -352,23 +393,11 @@ $("#btnNext").click(function(){
     }
 
     var $id_question = $("#id_question").val();
-    // if($jawab =="")
-    // {
-    //     alert("Silahkan pilih jawaban terlebih dahulu");
-    //     return
-    // }
 
     $no =  parseInt($no) + 1;
     if($no > $total){
         $no = 1;
     }
-        // $.ajax({
-        //     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-        //     success: function(response){
-        //         var result = JSON.parse(response);
-        //         LoadQuestions(result);
-        //     }
-        // });
 
     var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt};
     $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
@@ -380,17 +409,7 @@ $("#btnNext").click(function(){
                     
                      LoadQuestions(result);
 
-                    // var jawab_exam = result["jawaban"]["answer_script"];
                     var isDoubt = result["jawaban"]["isDoubt"];
-                    //     $("#jawab").val(jawab_exam);
-                    //     $("#select_"+jawab_exam).addClass('active');
-                    
-                  
-                            // if(parseInt(isDoubt) !=  1)
-                            // {
-                            //     $('[name="cek_isDoubt"]').removeAttr('checked');  
-                            // }
- 
 
                     if($no == $total)
                     {
@@ -411,14 +430,35 @@ $("#btnNext").click(function(){
 
 $("#btnKumpulkan").click(function(){
 
-    $('#ketWarna').attr('style','display:block;');
-    $('#afterExam').attr('style','display:block;');
-    $('#total_jawab').attr('style','display:block;');
-    $('#hasil_skor').attr('style','display:block;');
+    if($("#finish_exam").val() > 0)
+    {
+        alert('Dibatalkan, Anda sudah menyelesaikan ujian !');
+        return
+    }else{
 
-    $(".arranswer").attr('style','pointer-events: none;');
-    $("#cek_isDoubt").prop('disabled',true);
-    $('.btn-kosong').prop('disabled',true);
+        if(confirm('Anda yakin ingin menyelesaikan ujian ?'))
+        {
+
+            var $jawab = $("#jawab").val();
+            var $cek_isDoubt = document.getElementById("cek_isDoubt");
+            var $id_question = $("#id_question").val();
+            var $code = $("#code").val();
+            var $no = $("#hdnNo").val();
+
+            var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt,'code':$code,'no':$no};
+            $.post("<?php echo base_url();?>/student/final_exam",postvar, function( data ) {
+                if(data.status){
+                    LoadJawaban(data.data);
+
+                }
+            }, "json");
+
+        }else{
+            return
+        }
+    }
+               
+
 });
 
 $(".arranswer").click(function(){
@@ -440,6 +480,14 @@ $("#btnPrev").click(function(){
     var $total = $("#hdnTotal").val();
     var $id_question = $("#id_question").val();
     var $jawab = $("#jawab").val();
+
+    if($jawab.length == 0)
+    {
+        var $jawab = 0;
+    }else{
+        var $jawab = $("#jawab").val();
+    }
+
     var $cek_isDoubt = document.getElementById("cek_isDoubt");
     if($cek_isDoubt.checked == true)
     {
@@ -448,40 +496,13 @@ $("#btnPrev").click(function(){
         $isDoubt = 0;
     }
 
-    // if($jawab =="")
-    // {
-    //     alert("Silahkan pilih jawaban terlebih dahulu");
-    //     return
-    // }
 
     if($no == 1){
         $no = $total;
     }else{
         $no = parseInt($no) - 1;
     }
-        // $.ajax({
-        //     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-        //     success: function(response){
-        //         var result = JSON.parse(response);
-        //         LoadQuestions(result);
-        //     }
-        // });
 
-        // var postvar = {'id_question':$id_question};
-        // $.post("<?php echo base_url();?>student/get_answer_exam",postvar, function( data ) { 
-        //     if(data.status){  
-        //         $.ajax({
-        //             url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-        //             success: function(response){
-        //                 var result = JSON.parse(response);
-        //                 LoadQuestions(result);
-
-        //                 $('#jawab').val(str);
-        //                 $('#select_'+str).addClass('active');
-        //             }
-        //         });
-        //     }
-        // }, "json");
         var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt};
         $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
             if(data.status){
@@ -492,18 +513,6 @@ $("#btnPrev").click(function(){
                         var result = JSON.parse(response);
 
                         LoadQuestions(result);
-
-                        
-                        // var jawab_exam = result["jawaban"]["answer_script"];
-                        var isDoubt = result["jawaban"]["isDoubt"];
-                        //     $("#jawab").val(jawab_exam);
-                        //     $("#select_"+jawab_exam).addClass('active');
-                            
-
-                                // if(parseInt(isDoubt) !=  1)
-                                // {
-                                //     $('[name="cek_isDoubt"]').removeAttr('checked');  
-                                // }
 
                         if($no == $total)
                         {
@@ -521,8 +530,7 @@ $("#btnPrev").click(function(){
 
 function LoadQuestions(result){
 
-    // $.ajaxSetup({async:false});
-$('[name="cek_isDoubt"]').removeAttr('checked');  
+    $('[name="cek_isDoubt"]').removeAttr('checked');  
     $(".arranswer").removeClass('active');
 
     let jawaban = ["A","B","C","D","E"]
@@ -567,20 +575,95 @@ $('[name="cek_isDoubt"]').removeAttr('checked');
             $("#select_"+jawab_exam).addClass('active');
 
     var isDoubt = result["jawaban"]["isDoubt"];
-     
-             
+        
     if(isDoubt == 1)
     {
-
         $('[name="cek_isDoubt"]').prop('checked', true);
 
     }else{
 
-
         $('[name="cek_isDoubt"]').removeAttr('checked');  
     }
 
-    // $.ajaxSetup({async:true});
+}
+
+function LoadJawaban(result){
+
+    // $('#ketWarna').attr('style','display:block;');
+    $('#afterExam').attr('style','display:block;');
+    $('#total_jawab').attr('style','display:block;');
+    $('#hasil_skor').attr('style','display:block;');
+
+    $(".arranswer").attr('style','pointer-events: none;');
+    $("#cek_isDoubt").prop('disabled',true);
+    $('.btn-kosong').prop('disabled',true);
+
+    $("#jwb_benar").html(result['final_exam']['total_benar']);
+    $("#jwb_salah").html(result['final_exam']['total_salah']);
+    $("#skor").html(result['final_exam']['skor']);
+
+    $("#jmlJwb").html(result['final_exam']["total_isi"]);
+    $("#jmlRagu").html(result['final_exam']["total_ragu"]);
+    $("#jmlTanpaRagu").html(result['final_exam']["total_tanpa_ragu"]);
+    $("#jmlKosong").html(result['final_exam']["total_kosong"]);
+
+    $("#finish_exam").val(result['jawaban']["finish_exam"]);
+    
+
+    $('[name="cek_isDoubt"]').removeAttr('checked');  
+    $(".arranswer").removeClass('active');
+
+    let jawaban = ["A","B","C","D","E"]
+    console.log(result);
+    console.log(result["student"]);
+
+    //student
+    $("#name").html(result["student"]["name"]);
+    $("#studentId").html(result["student"]["student_id"]);
+
+    //total soal
+    $("#jmlSoal").html(result["total_soal"]);
+    $("#hdnTotal").val(result["total_soal"]);
+
+    //soal
+    console.log(result["soal"]);
+    $("#no").html(result["soal"]["no"]);
+    $("#hdnNo").val(result["soal"]["no"]);
+    $("#pertanyaan").html(result["soal"]["question_title"]);
+
+    //Kunci jawaban
+    var kunci = result["soal"]["correct_answers"]
+    var kunciJwb = parseInt(kunci) - 1;
+
+    $("#kunci").html(jawaban[kunciJwb]);
+    $("#explanation").html(result["soal"]["explanation"]);
+    $("#reference").html(result["soal"]["reference"]);
+    $("#keywords").html(result["soal"]["keywords"]);
+    
+    let options = [];
+    options = JSON.parse(result["soal"]["options"])
+    $("#A").html(options[0]);
+    $("#B").html(options[1]);
+    $("#C").html(options[2]);
+    $("#D").html(options[3]);
+    $("#E").html(options[4]);
+
+    $("#id_question").val(result["soal"]["question_bank_id"]);
+
+    var jawab_exam = result["jawaban"]["answer_script"];
+            $("#jawab").val(jawab_exam);
+            $("#select_"+jawab_exam).addClass('active');
+
+    var isDoubt = result["jawaban"]["isDoubt"];
+             
+    if(isDoubt == 1)
+    {
+        $('[name="cek_isDoubt"]').prop('checked', true);
+    }else{
+        $('[name="cek_isDoubt"]').removeAttr('checked');  
+    }
 
 }
+
+
 </script>

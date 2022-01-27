@@ -175,6 +175,56 @@ class Student extends CI_Controller {
 
     }
 
+    function final_exam()
+    {
+      $student_id = $this->session->userdata('login_user_id');
+      $id_question = $this->input->post("id_question");
+      $jawab = $this->input->post("jawab");
+      $isDoubt = $this->input->post("isDoubt");
+      $code = $this->input->post("code");
+      $no = $this->input->post("no");
+
+      $this->crud_model->update_online_exam_result($id_question,$jawab,$isDoubt);
+
+      $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row()->online_exam_id;
+
+      $question_result = $this->db->get_where('online_exam_result', array('online_exam_id' => $online_exam_id));
+      $soal = $question_result->result_array();
+        foreach ($soal as $question) {
+          $data_nilai = 0 ;
+          $where = array('question_bank_id' => $question['question_bank_id'],
+                              'student_id'=> $student_id);
+
+          $correct_answers  = $this->crud_model->get_correct_answer($question['question_bank_id']);
+          if(trim($question['answer_script']) == trim($correct_answers))
+          { 
+              $data_nilai = array('jwb_benar' => 1,'jwb_salah' => 0);
+          }else{
+              $data_nilai = array('jwb_salah'=> 1,'jwb_benar' => 0);
+          }
+          $update = $this->crud_model->update_nilai($where,$data_nilai);
+        }
+        $page_data['final_exam'] = $this->crud_model->final_result_exam($online_exam_id,$student_id);
+        
+        // $data['total_benar'] = $final['total_benar'];
+        // $data['total_salah'] = $final['total'];
+        // $data['skor'] = 0;
+        // $data['total_ragu'] = 0;
+
+        $online_exam_id = $this->db->get_where('online_exam', array('code' => $code))->row()->online_exam_id;
+        $student_id = $this->session->userdata('login_user_id');
+        $page_data['total_soal'] = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id))->num_rows();
+        $page_data['soal'] = $this->db->get_where('question_bank', array('online_exam_id' => $online_exam_id, 'no' => $no))->row_array();
+        $page_data['student'] = $this->db->get_where('student', array('student_id' => $student_id))->row_array();
+        $page_data['jawaban'] = $this->db->get_where('online_exam_result', array('question_bank_id' =>$page_data['soal']['question_bank_id']))->row_array();
+        $page_data['code'] = $code;
+
+        $return_result = array("status" => TRUE,"data" => $page_data);
+        echo json_encode($return_result);
+
+
+    }
+
     function get_answer_exam()
     {
         $id_question = $this->input->post("id_question");
@@ -210,7 +260,6 @@ class Student extends CI_Controller {
         $page_data['page_title'] = get_phrase('online_exam_results');
         $this->load->view('backend/index', $page_data);
     }
-
 
     function take_online_exam($online_exam_code) {
 
