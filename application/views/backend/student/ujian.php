@@ -376,33 +376,11 @@ $("#btnNext").click(function(){
     if($no > $total){
         $no = 1;
     }
-        // $.ajax({
-        //     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-        //     success: function(response){
-        //         var result = JSON.parse(response);
-        //         LoadQuestions(result);
-        //     }
-        // });
-
-    var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt};
-    $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
-        if(data.status){
-            $.ajax({
-                url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-                success: function(response){
-                    var result = JSON.parse(response);
-                    LoadQuestions(result);
-                    var jawab_exam = result["jawaban"]["answer_script"];
-                    var isDoubt = result["jawaban"]["isDoubt"];
-                        $("#jawab").val(jawab_exam);
-                        $("#select_"+jawab_exam).addClass('active');
-                    
-                    if(parseInt(isDoubt) == 1)
-                    {
-                        $('[name="cek_isDoubt"]').attr('checked','checked');
-                    }else{
-                        $('[name="cek_isDoubt"]').removeAttr('checked');  
-                    }
+        $.ajax({
+            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+            success: function(response){
+                var result = JSON.parse(response);
+                LoadQuestions(result);
 
                     if($no == $total)
                     {
@@ -412,12 +390,8 @@ $("#btnNext").click(function(){
                         $('#btnNext').attr('style','display:block;');
                         $('#btnKumpulkan').attr('style','display:none;');
                     }
-
-
-                }
-            });
-        }
-    }, "json");
+            }
+        });
 
 });
 
@@ -427,15 +401,6 @@ $("#btnKumpulkan").click(function(){
     $('#afterExam').attr('style','display:block;');
     $('#total_jawab').attr('style','display:block;');
 
-});
-
-$(".arranswer").click(function(){
-    $(".arranswer").removeClass('active');
-    var idjwb = $(this).attr("id").split("_");
-    var str = idjwb[1];
-    $('#jawab').val(str);
-
-    $('#select_'+str).addClass('active');
 });
 
 $("#btnModalNormalLab").click(function(){
@@ -467,49 +432,11 @@ $("#btnPrev").click(function(){
     }else{
         $no = parseInt($no) - 1;
     }
-        // $.ajax({
-        //     url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-        //     success: function(response){
-        //         var result = JSON.parse(response);
-        //         LoadQuestions(result);
-        //     }
-        // });
-
-        // var postvar = {'id_question':$id_question};
-        // $.post("<?php echo base_url();?>student/get_answer_exam",postvar, function( data ) { 
-        //     if(data.status){  
-        //         $.ajax({
-        //             url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-        //             success: function(response){
-        //                 var result = JSON.parse(response);
-        //                 LoadQuestions(result);
-
-        //                 $('#jawab').val(str);
-        //                 $('#select_'+str).addClass('active');
-        //             }
-        //         });
-        //     }
-        // }, "json");
-        var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt};
-        $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
-            if(data.status){
-
-                $.ajax({
-                    url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
-                    success: function(response){
-                        var result = JSON.parse(response);
-                        LoadQuestions(result);
-                        var jawab_exam = result["jawaban"]["answer_script"];
-                        var isDoubt = result["jawaban"]["isDoubt"];
-                            $("#jawab").val(jawab_exam);
-                            $("#select_"+jawab_exam).addClass('active');
-                            alert(isDoubt);
-                        if(parseInt(isDoubt) == 1)
-                        {
-                            $('[name="cek_isDoubt"]').attr('checked','checked');
-                        }else{
-                            $('[name="cek_isDoubt"]').removeAttr('checked');  
-                        }
+        $.ajax({
+            url: '<?php echo base_url();?>student/ujianAjax/' + $code+'/'+ $no,
+            success: function(response){
+                var result = JSON.parse(response);
+                LoadQuestions(result);
 
                         if($no == $total)
                         {
@@ -519,10 +446,8 @@ $("#btnPrev").click(function(){
                             $('#btnNext').attr('style','display:block;');
                             $('#btnKumpulkan').attr('style','display:none;');
                         }
-                    }
-                });
             }
-        }, "json");
+        });
 });
 
 function LoadQuestions(result){
@@ -566,14 +491,43 @@ function LoadQuestions(result){
 
     $("#id_question").val(result["soal"]["question_bank_id"]);
 
-    // var jawab_exam = result["jawaban"]["answer_script"];
+    var jawab_exam = result["jawaban"]["answer_script"];
+    var isDoubt = result["jawaban"]["isDoubt"];
+    $("#jawab").val(jawab_exam);
+    $("#select_"+jawab_exam).addClass('active');
 
-    // if(empty(jawab_exam) || jawab_exam == "")
-    // {
-    //     //nothing
-    // }else{
-    //     $("#jawab").val(jawab_exam);
-    //     $("#select_"+jawab_exam).addClass('active');
-    // }
+    if(parseInt(isDoubt) == 1)
+    {
+        $('[name="cek_isDoubt"]').attr('checked','checked');
+    }else{
+        $('[name="cek_isDoubt"]').removeAttr('checked');  
+    }
 }
+
+//Save answer
+$(".arranswer").click(function(){
+    var $id_question = $("#id_question").val();
+    var $jawab = $("#jawab").val();
+    var $cek_isDoubt = document.getElementById("cek_isDoubt");
+    if($cek_isDoubt.checked == true)
+    {
+        $isDoubt = 1;
+    }else{
+        $isDoubt = 0;
+    }
+    $(".arranswer").removeClass('active');
+    var idjwb = $(this).attr("id").split("_");
+    var str = idjwb[1];
+    $('#jawab').val(str);
+
+    $('#select_'+str).addClass('active');
+
+        var postvar = {'id_question':$id_question,'jawab':$jawab,'isDoubt':$isDoubt};
+        $.post("<?php echo base_url();?>student/update_exam",postvar, function( data ) { 
+            if(data.status){
+                alert("Jawaban berhasil disimpan !");
+            }
+        }, "json");
+});
+
 </script>
